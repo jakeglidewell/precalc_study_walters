@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Calc Final // Walters — Study Game</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0e1a;--sf:#111827;--sf2:#1a2236;--bd:#2a3350;--tx:#e8eaf0;--dm:#6b7394;--ac:#6c63ff;--ac2:#22d3ee;--gn:#34d399;--rd:#f87171;--or:#fbbf24}
+body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:var(--sf);border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:8px}
+.hdr-logo{font-size:15px;font-weight:700}.hdr-logo span{color:var(--ac)}
+.hdr-stats{display:flex;gap:14px;font-size:12px;color:var(--dm);align-items:center;flex-wrap:wrap}
+.hdr-stats b{color:var(--tx)}.hdr-stats .gn{color:var(--gn)}
+.xp-bar{width:60px;height:3px;background:var(--sf2);border-radius:2px;overflow:hidden}
+.xp-fill{height:100%;background:var(--ac);border-radius:2px;transition:width .3s}
+.streak-badge{padding:2px 8px;border-radius:12px;background:rgba(251,191,36,.15);color:var(--or);font-size:11px;font-weight:700;display:none}
+.streak-badge.show{display:inline}
+.wrap{max-width:680px;margin:0 auto;padding:28px 18px}
+.screen{display:none}.screen.active{display:block}
+h2{font-size:24px;font-weight:700;margin-bottom:4px}
+.sub{color:var(--dm);font-size:13px;margin-bottom:24px}
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.mode-card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:18px 16px;cursor:pointer;transition:all .15s}
+.mode-card:hover{border-color:var(--ac);background:var(--sf2)}
+.mode-icon{font-size:26px;margin-bottom:6px}
+.mode-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.mode-desc{font-size:11px;color:var(--dm);line-height:1.4}
+.prog{height:4px;background:var(--sf2);border-radius:2px;margin-bottom:20px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:2px;transition:width .3s}
+.q-row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px;color:var(--dm)}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--sf2);border:1px solid var(--bd);color:var(--ac)}
+.q-text{font-size:18px;font-weight:700;line-height:1.4;margin-bottom:16px}
+.opt-btn{display:block;width:100%;padding:13px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:14px;text-align:left;cursor:pointer;margin-bottom:8px;font-family:inherit;transition:all .15s}
+.opt-btn:hover:not(.locked){border-color:var(--ac);background:var(--sf2)}
+.opt-btn.locked{cursor:default}
+.opt-btn.correct{border-color:var(--gn);background:rgba(52,211,153,.1);color:var(--gn)}
+.opt-btn.wrong{border-color:var(--rd);background:rgba(248,113,113,.1);color:var(--rd)}
+.opt-letter{font-family:monospace;margin-right:8px;opacity:.5}
+.tip-box{margin-top:14px;padding:12px 16px;background:var(--sf);border-radius:10px;border-left:3px solid var(--ac);font-size:13px;color:var(--dm);line-height:1.6;display:none}
+.tip-box.show{display:block}
+.tip-box b{color:var(--tx)}
+.btn{padding:10px 22px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn:hover{border-color:var(--ac)}
+.btn-primary{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn-primary:hover{opacity:.9}
+.timer{font-size:30px;font-weight:700;font-family:monospace;text-align:center;margin-bottom:10px;color:var(--ac2)}
+.timer.warn{color:var(--or)}.timer.danger{color:var(--rd)}
+.center{text-align:center}
+.mt{margin-top:14px}.mr{text-align:right}
+.score-big{font-size:60px;font-weight:700;letter-spacing:-3px;margin:14px 0}
+.score-big.great{color:var(--gn)}.score-big.ok{color:var(--or)}.score-big.bad{color:var(--rd)}
+.uc-center{display:flex;justify-content:center;margin-bottom:14px}
+.fb-text{text-align:center;font-size:14px;font-weight:700}
+.fb-detail{color:var(--dm);font-weight:400;margin-top:4px;font-size:12px}
+.graph-center{display:flex;justify-content:center;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">Pre-Calc Final <span>// Walters</span></div>
+  <div class="hdr-stats">
+    <span>LVL <b id="level">1</b></span>
+    <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    <span><b id="xpVal">0</b>XP</span>
+    <span class="streak-badge" id="streakBadge">🔥<span id="streakVal">0</span></span>
+    <span>✓<b class="gn" id="totalCorrect">0</b></span>
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="screen active" id="menuScreen">
+  <div class="wrap">
+    <h2>Choose your game</h2>
+    <p class="sub">Each mode teaches differently. Mix them up.</p>
+    <div class="mode-grid" id="modeGrid"></div>
+  </div>
+</div>
+
+<!-- UNIT CIRCLE -->
+<div class="screen" id="ucScreen">
+  <div class="wrap">
+    <div class="prog"><div class="prog-fill" id="ucProg"></div></div>
+    <div class="q-row"><span id="ucCounter"></span><span class="badge">Unit Circle</span></div>
+    <div class="q-text" id="ucPrompt"></div>
+    <div class="uc-center"><svg id="ucSvg" width="310" height="310"></svg></div>
+    <div id="ucFeedback" style="display:none"></div>
+    <div class="center mt"><button class="btn" onclick="showScreen('menu')">← Menu</button></div>
+  </div>
+</div>
+
+<!-- GRAPH MATCH -->
+<div class="screen" id="gmScreen">
+  <div class="wrap">
+    <div class="prog"><div class="prog-fill" id="gmProg"></div></div>
+    <div class="q-row"><span id="gmCounter"></span><span class="badge">Graph Match</span></div>
+    <div class="q-text">Which equation matches this graph?</div>
+    <div class="graph-center"><svg id="gmSvg" width="320" height="220"></svg></div>
+    <div id="gmOpts"></div>
+    <div class="tip-box" id="gmTip"></div>
+    <div class="mr mt" id="gmNext" style="display:none"><button class="btn btn-primary" onclick="nextGM()">Next →</button></div>
+    <div class="center mt"><button class="btn" onclick="showScreen('menu')">← Menu</button></div>
+  </div>
+</div>
+
+<!-- RAPID FIRE -->
+<div class="screen" id="rfScreen">
+  <div class="wrap">
+    <div class="prog"><div class="prog-fill" id="rfProg"></div></div>
+    <div class="q-row"><span id="rfCounter"></span><span class="badge" id="rfBadge"></span></div>
+    <div class="timer" id="rfTimer">15</div>
+    <div class="q-text" id="rfQuestion"></div>
+    <div id="rfOpts"></div>
+    <div id="rfTimeout" style="display:none" class="center fb-text" style="color:var(--rd)"></div>
+    <div class="tip-box" id="rfTip"></div>
+    <div class="mr mt" id="rfNext" style="display:none"><button class="btn btn-primary" onclick="nextRF()">Next →</button></div>
+    <div class="center mt"><button class="btn" onclick="stopRFTimer();showScreen('menu')">← Menu</button></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="resScreen">
+  <div class="wrap center" id="resContent"></div>
+</div>
+
+<script>
+// ============ DATA ============
+const UC=[
+  {d:0,r:"0",c:"1",s:"0",xy:"(1, 0)"},
+  {d:30,r:"π/6",c:"√3/2",s:"1/2",xy:"(√3/2, 1/2)"},
+  {d:45,r:"π/4",c:"√2/2",s:"√2/2",xy:"(√2/2, √2/2)"},
+  {d:60,r:"π/3",c:"1/2",s:"√3/2",xy:"(1/2, √3/2)"},
+  {d:90,r:"π/2",c:"0",s:"1",xy:"(0, 1)"},
+  {d:120,r:"2π/3",c:"-1/2",s:"√3/2",xy:"(-1/2, √3/2)"},
+  {d:135,r:"3π/4",c:"-√2/2",s:"√2/2",xy:"(-√2/2, √2/2)"},
+  {d:150,r:"5π/6",c:"-√3/2",s:"1/2",xy:"(-√3/2, 1/2)"},
+  {d:180,r:"π",c:"-1",s:"0",xy:"(-1, 0)"},
+  {d:210,r:"7π/6",c:"-√3/2",s:"-1/2",xy:"(-√3/2, -1/2)"},
+  {d:225,r:"5π/4",c:"-√2/2",s:"-√2/2",xy:"(-√2/2, -√2/2)"},
+  {d:240,r:"4π/3",c:"-1/2",s:"-√3/2",xy:"(-1/2, -√3/2)"},
+  {d:270,r:"3π/2",c:"0",s:"-1",xy:"(0, -1)"},
+  {d:300,r:"5π/3",c:"1/2",s:"-√3/2",xy:"(1/2, -√3/2)"},
+  {d:315,r:"7π/4",c:"√2/2",s:"-√2/2",xy:"(√2/2, -√2/2)"},
+  {d:330,r:"11π/6",c:"√3/2",s:"-1/2",xy:"(√3/2, -1/2)"},
+];
+
+const GRAPHS=[
+  {eq:"f(x) = (x-2)² - 3",fn:x=>Math.pow(x-2,2)-3,xr:[-2,6],yr:[-4,6],info:"Parent x², right 2, down 3"},
+  {eq:"f(x) = -|x+1| + 4",fn:x=>-Math.abs(x+1)+4,xr:[-6,4],yr:[-3,5],info:"Parent |x|, reflect, left 1, up 4"},
+  {eq:"f(x) = √(x+3) - 1",fn:x=>x>=-3?Math.sqrt(x+3)-1:null,xr:[-4,8],yr:[-3,4],info:"Parent √x, left 3, down 1"},
+  {eq:"f(x) = 2sin(x)",fn:x=>2*Math.sin(x),xr:[-1,7],yr:[-3,3],info:"Amplitude 2, period 2π"},
+  {eq:"f(x) = sin(2x)+1",fn:x=>Math.sin(2*x)+1,xr:[-1,7],yr:[-1,3],info:"Period π, up 1"},
+  {eq:"f(x) = x(x-2)(x+1)",fn:x=>x*(x-2)*(x+1),xr:[-2,3],yr:[-4,4],info:"Zeros at -1, 0, 2"},
+  {eq:"f(x) = -(x+3)³+2",fn:x=>-1*Math.pow(x+3,3)+2,xr:[-6,0],yr:[-6,8],info:"Reflect, left 3, up 2"},
+];
+
+const RQ=[
+  {t:"Transformations",n:1,q:"g(x) = -(x+3)² + 5 — transformations from x²?",o:["Reflect x-axis, left 3, up 5","Reflect y-axis, right 3, up 5","Left 3, down 5","Right 3, up 5"],a:0,tip:"Negative = reflect x-axis. +3 inside = left. +5 = up."},
+  {t:"Inverses",n:2,q:"Inverse of f(x) = 2x + 6?",o:["(x-6)/2","(x+6)/2","2x-6","x/2-6"],a:0,tip:"Swap x,y: x=2y+6 → y=(x-6)/2."},
+  {t:"Domain/Range",n:2,q:"Range of f(x) = √(x-3) + 1?",o:["y ≥ 1","y ≥ 3","y ≥ 0","All reals"],a:0,tip:"√ outputs ≥ 0, +1 shifts to y ≥ 1."},
+  {t:"Synthetic Div",n:3,q:"Dividing by (x-3), what goes in the box?",o:["3","-3","1/3","x"],a:0,tip:"(x-c) → use c. So use 3."},
+  {t:"Synthetic Div",n:3,q:"(x³-1) ÷ (x+2) remainder?",o:["-9","7","-7","9"],a:0,tip:"Coeffs 1,0,0,-1. Use -2. Result: remainder -9."},
+  {t:"Complex Roots",n:4,q:"If 2i is a root (real coefficients), what else must be?",o:["-2i","2","-2","4i"],a:0,tip:"Conjugate Root Theorem: 2i pairs with -2i."},
+  {t:"RRT",n:5,q:"P(x)=2x³-3x+1. Possible rational roots = ±(factors of __) / (factors of __)?",o:["1 over 2","2 over 1","3 over 2","1 over 3"],a:0,tip:"±(constant factors)/(leading coeff factors)."},
+  {t:"Long Division",n:6,q:"When must you use long division instead of synthetic?",o:["Divisor is degree 2+","Dividend has negatives","Lead coeff > 1","Never needed"],a:0,tip:"Synthetic only works for (x-c)."},
+  {t:"Sketch p(x)",n:7,q:"At x=-1 in P(x)=2(x+1)²(x-4), the graph:",o:["Bounces","Crosses","Has a cusp","Undefined"],a:0,tip:"Even multiplicity (²) = bounce."},
+  {t:"Sketch p(x)",n:7,q:"End behavior of -3x⁵ + ...?",o:["Rises left, falls right","Falls left, rises right","Falls both","Rises both"],a:0,tip:"Odd degree + negative lead: ↗ left, ↘ right."},
+  {t:"VA & HA",n:8,q:"Degree top < degree bottom → HA is:",o:["y = 0","Lead coeff ratio","No HA","y = 1"],a:0,tip:"Bottom overpowers → shrinks to 0."},
+  {t:"VA & HA",n:8,q:"f(x)=(2x²+1)/(x²-4). HA?",o:["y = 2","y = 0","y = -1/4","No HA"],a:0,tip:"Same degree → ratio = 2/1 = 2."},
+  {t:"Holes",n:9,q:"f(x)=(x²-4)/(x²-x-2). Hole where?",o:["x = 2","x = -2","x = -1","No hole"],a:0,tip:"(x-2)(x+2)/((x-2)(x+1)). (x-2) cancels → hole at x=2."},
+  {t:"Slant",n:10,q:"When does a slant asymptote exist?",o:["Deg top = deg bottom + 1","Degrees equal","Deg bottom > top","Always"],a:0,tip:"Num degree exactly 1 more → slant."},
+  {t:"Exponentials",n:11,q:"Solve: 3^(2x) = 81",o:["x = 2","x = 4","x = 3","x = 27"],a:0,tip:"81=3⁴ → 2x=4 → x=2."},
+  {t:"Exponentials",n:11,q:"Solve: 4^x = 8",o:["x = 3/2","x = 2","x = 2/3","x = 1/2"],a:0,tip:"(2²)^x=2³ → 2x=3 → x=3/2."},
+  {t:"Logarithms",n:12,q:"log₂(32) = ?",o:["5","4","6","16"],a:0,tip:"2⁵=32."},
+  {t:"Logarithms",n:12,q:"log_b(1) = ? (any valid base)",o:["0","1","b","undefined"],a:0,tip:"b⁰=1. From 4.4."},
+  {t:"Logarithms",n:12,q:"Expand: log₃(x²y/z)",o:["2log₃x + log₃y - log₃z","2log₃x · log₃y / log₃z","log₃(2x)+log₃(yz)","(log₃x)²+log₃y-log₃z"],a:0,tip:"Product→add, quotient→sub, power→multiply."},
+  {t:"Trig",n:13,q:"sin θ = 1/2 for 0≤θ<360°",o:["30° and 150°","60° and 120°","30° and 330°","150° and 210°"],a:0,tip:"sin+ in Q1&Q2. Ref 30°."},
+  {t:"Trig",n:13,q:"cos θ = 0 for 0≤θ<360°",o:["90° and 270°","0° and 180°","0° and 360°","90° and 180°"],a:0,tip:"cos=0 at 90° and 270°."},
+  {t:"Trig",n:13,q:"tan θ = -√3 for 0≤θ<360°",o:["120° and 300°","60° and 240°","150° and 330°","120° and 240°"],a:0,tip:"Ref 60°. tan- in Q2&Q4."},
+  {t:"Quad Trig",n:14,q:"2sin²θ - sinθ - 1 = 0 factors as:",o:["(2sinθ+1)(sinθ-1)","(2sinθ-1)(sinθ+1)","(sinθ+1)(sinθ-1)","(2sinθ+1)(sinθ+1)"],a:0,tip:"Let u=sinθ → (2u+1)(u-1)."},
+  {t:"Sum/Diff",n:15,q:"cos(π/12) = cos(___)?",o:["π/3 - π/4","π/6 - π/12","π/2 - π/3","π/4 + π/6"],a:0,tip:"π/3-π/4 = π/12."},
+  {t:"Double Angle",n:15,q:"Valid forms of cos(2θ)?",o:["All: cos²θ-sin²θ, 2cos²θ-1, 1-2sin²θ","Only cos²θ-sin²θ","Only 2cos²θ-1","Only 1-2sin²θ"],a:0,tip:"All three. From 7.2."},
+  {t:"Sine Graphs",n:16,q:"y=3sin(2x)+1: Amp & Period?",o:["Amp=3, Period=π","Amp=3, Period=2π","Amp=2, Period=π","Amp=1, Period=π/2"],a:0,tip:"A=3, P=2π/2=π."},
+  {t:"Series",n:17,q:"2,-4,8,-16... arithmetic or geometric?",o:["Geometric, r=-2","Arithmetic, d=-6","Geometric, r=2","Neither"],a:0,tip:"Ratio=-2. Constant → geometric."},
+  {t:"Series",n:17,q:"Infinite geometric: a₁=4, r=1/3. S∞=?",o:["6","12","4","Diverges"],a:0,tip:"S∞=4/(1-1/3)=6. From 8.4."},
+  {t:"Series",n:17,q:"Explicit formula for -17,-13,-9,...?",o:["aₙ=-17+(n-1)(4)","aₙ=-17+(n-1)(-4)","aₙ=-17·4^(n-1)","aₙ=4n-17"],a:0,tip:"d=4. aₙ=a₁+(n-1)d."},
+  {t:"Conics",n:18,q:"(x-2)²/9 + (y+1)²/4 = 1 is a:",o:["Ellipse","Circle","Hyperbola","Parabola"],a:0,tip:"x²/a²+y²/b²=1, a≠b → ellipse."},
+  {t:"Conics",n:18,q:"Ellipse: a, b, c relationship?",o:["c²=a²-b²","c²=a²+b²","a²=b²-c²","b²=a²+c²"],a:0,tip:"Ellipse: c²=a²-b². From 9.1."},
+  {t:"Conics",n:18,q:"(y-2)²=8(x+1) opens:",o:["Right","Left","Up","Down"],a:0,tip:"(y-k)²=4p(x-h), p=2>0 → right."},
+  {t:"Conics",n:18,q:"x²-y²=16 is a:",o:["Hyperbola","Ellipse","Circle","Parabola"],a:0,tip:"Subtraction → hyperbola."},
+];
+
+// ============ STATE ============
+let xp=0, streak=0, bestStreak=0, totalC=0;
+let ucQs=[], ucI=0, ucOk=0, ucFb=null, ucCl=null, ucMode="angle";
+let gmQs=[], gmI=0, gmOk=0, gmFb=null, gmSel=null;
+let rfQs=[], rfI=0, rfOk=0, rfFb=null, rfSel=null, rfTime=15, rfInterval=null;
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function updateHdr(){
+  const lv=Math.floor(xp/100)+1;
+  document.getElementById('level').textContent=lv;
+  document.getElementById('xpFill').style.width=(xp%100)+'%';
+  document.getElementById('xpVal').textContent=xp;
+  document.getElementById('totalCorrect').textContent=totalC;
+  const sb=document.getElementById('streakBadge');
+  if(streak>=2){sb.classList.add('show');document.getElementById('streakVal').textContent=streak;}
+  else sb.classList.remove('show');
+}
+
+function doStreak(ok){
+  if(ok){streak++;if(streak>bestStreak)bestStreak=streak;}else streak=0;
+  updateHdr();
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id+'Screen').classList.add('active');
+}
+
+// ============ MENU ============
+const modes=[
+  {i:"🎯",t:"Unit Circle Blitz",d:"Click angle by radian. From 5.1c.",f:()=>startUC("angle")},
+  {i:"📍",t:"UC: Coordinates",d:"Given (cos,sin), find it.",f:()=>startUC("coord")},
+  {i:"📈",t:"Graph Match",d:"See graph → pick equation.",f:startGM},
+  {i:"⚡",t:"Rapid Fire",d:"15-sec timer. All 18 topics.",f:startRF},
+  {i:"📐",t:"UC: sin θ",d:"Given sin value, click angle.",f:()=>startUC("sin")},
+  {i:"📏",t:"UC: cos θ",d:"Given cos value, click angle.",f:()=>startUC("cos")},
+];
+const mg=document.getElementById('modeGrid');
+modes.forEach(m=>{
+  const d=document.createElement('div');d.className='mode-card';
+  d.innerHTML=`<div class="mode-icon">${m.i}</div><div class="mode-title">${m.t}</div><div class="mode-desc">${m.d}</div>`;
+  d.onclick=m.f;mg.appendChild(d);
+});
+
+// ============ SVG HELPERS ============
+const NS="http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){const e=document.createElementNS(NS,tag);for(const[k,v] of Object.entries(attrs))e.setAttribute(k,v);return e;}
+
+// ============ UNIT CIRCLE ============
+function startUC(mode){
+  ucMode=mode;ucQs=shuffle(UC).slice(0,10);ucI=0;ucOk=0;ucFb=null;ucCl=null;
+  showScreen('uc');renderUC();
+}
+function renderUC(){
+  const cur=ucQs[ucI];
+  document.getElementById('ucCounter').textContent=`${ucI+1}/${ucQs.length}`;
+  document.getElementById('ucProg').style.width=(ucI/ucQs.length*100)+'%';
+  let pr="";
+  if(ucMode==="angle")pr=`Where is ${cur.r} on the unit circle?`;
+  if(ucMode==="coord")pr=`Which angle has coordinates ${cur.xy}?`;
+  if(ucMode==="sin")pr=`Where is sin θ = ${cur.s}?`;
+  if(ucMode==="cos")pr=`Where is cos θ = ${cur.c}?`;
+  document.getElementById('ucPrompt').textContent=pr;
+  document.getElementById('ucFeedback').style.display='none';
+  drawUC();
+}
+function drawUC(){
+  const svg=document.getElementById('ucSvg');
+  svg.innerHTML='';
+  const cx=155,cy=155,r=115;
+  svg.appendChild(svgEl('circle',{cx,cy,r,fill:'none',stroke:'#2a3350','stroke-width':1.5}));
+  svg.appendChild(svgEl('line',{x1:cx-r-8,y1:cy,x2:cx+r+8,y2:cy,stroke:'#2a3350','stroke-width':.5}));
+  svg.appendChild(svgEl('line',{x1:cx,y1:cy-r-8,x2:cx,y2:cy+r+8,stroke:'#2a3350','stroke-width':.5}));
+  // Quadrant labels
+  [['I',cx+r/2,cy-r/2],['II',cx-r/2,cy-r/2],['III',cx-r/2,cy+r/2+8],['IV',cx+r/2,cy+r/2+8]].forEach(([t,x,y])=>{
+    const txt=svgEl('text',{x,y,fill:'#2a3350','font-size':11,'text-anchor':'middle','font-family':'monospace'});
+    txt.textContent=t;svg.appendChild(txt);
+  });
+  const cur=ucQs[ucI];
+  UC.forEach(a=>{
+    const rad=a.d*Math.PI/180,px=cx+r*Math.cos(rad),py=cy-r*Math.sin(rad);
+    let col='#6b7394',sz=7;
+    const isClicked=ucFb&&ucCl===a.d;
+    const isAnswer=ucFb==='wrong'&&a.d===cur.d;
+    if(isClicked){col=ucFb==='correct'?'#34d399':'#f87171';sz=10;}
+    if(isAnswer){col='#34d399';sz=10;}
+    const dot=svgEl('circle',{cx:px,cy:py,r:sz,fill:col,style:'transition:all .2s;cursor:'+(ucFb?'default':'pointer')});
+    if(!ucFb)dot.onclick=()=>onUCClick(a.d);
+    svg.appendChild(dot);
+    if(ucFb&&(isClicked||isAnswer)){
+      const lbl=svgEl('text',{x:px+(Math.cos(rad)>0?13:-13),y:py+(Math.sin(rad)>0?-11:15),fill:col,'font-size':9,'font-weight':'bold','text-anchor':Math.cos(rad)>0?'start':'end','font-family':'monospace'});
+      lbl.textContent=a.d+'°';svg.appendChild(lbl);
+    }
+  });
+}
+function onUCClick(deg){
+  if(ucFb)return;
+  const cur=ucQs[ucI],ok=deg===cur.d;
+  ucCl=deg;ucFb=ok?'correct':'wrong';
+  if(ok){ucOk++;totalC++;xp+=(streak>=3?15:10);}
+  doStreak(ok);drawUC();
+  const fb=document.getElementById('ucFeedback');fb.style.display='block';
+  fb.innerHTML=`<div class="fb-text" style="color:${ok?'var(--gn)':'var(--rd)'}">${ok?'✓ Nice!':'✗ That was '+cur.d+'° ('+cur.r+')'}</div><div class="fb-detail">${cur.xy} — sin=${cur.s}, cos=${cur.c}</div>`;
+  setTimeout(()=>{
+    if(ucI+1>=ucQs.length){showResults('Unit Circle',ucOk,ucQs.length);}
+    else{ucI++;ucFb=null;ucCl=null;renderUC();}
+  },1300);
+}
+
+// ============ GRAPH MATCH ============
+function startGM(){
+  gmQs=shuffle(GRAPHS).map(g=>{
+    const wr=shuffle(GRAPHS.filter(x=>x.eq!==g.eq)).slice(0,3);
+    const opts=shuffle([g,...wr]);
+    return{...g,opts:opts.map(o=>o.eq),ci:opts.findIndex(o=>o.eq===g.eq)};
+  });
+  gmI=0;gmOk=0;gmFb=null;gmSel=null;
+  showScreen('gm');renderGM();
+}
+function drawGraph(svg,fn,xr,yr,w,h){
+  svg.innerHTML='';
+  const p=28,gw=w-2*p,gh=h-2*p;
+  const tx=x=>p+((x-xr[0])/(xr[1]-xr[0]))*gw;
+  const ty=y=>p+((yr[1]-y)/(yr[1]-yr[0]))*gh;
+  svg.appendChild(svgEl('rect',{width:w,height:h,fill:'#111827',rx:12}));
+  svg.appendChild(svgEl('line',{x1:p,y1:ty(0),x2:w-p,y2:ty(0),stroke:'#2a3350','stroke-width':1}));
+  svg.appendChild(svgEl('line',{x1:tx(0),y1:p,x2:tx(0),y2:h-p,stroke:'#2a3350','stroke-width':1}));
+  let d='',started=false;
+  for(let i=0;i<=200;i++){
+    const x=xr[0]+(i/200)*(xr[1]-xr[0]),y=fn(x);
+    if(y===null||y===undefined||isNaN(y)){started=false;continue;}
+    const cy2=Math.max(yr[0]-1,Math.min(yr[1]+1,y));
+    d+=(started?'L':'M')+tx(x).toFixed(1)+','+ty(cy2).toFixed(1)+' ';started=true;
+  }
+  svg.appendChild(svgEl('path',{d,fill:'none',stroke:'#22d3ee','stroke-width':2.5,'stroke-linecap':'round'}));
+}
+function renderGM(){
+  const cur=gmQs[gmI];
+  document.getElementById('gmCounter').textContent=`${gmI+1}/${gmQs.length}`;
+  document.getElementById('gmProg').style.width=(gmI/gmQs.length*100)+'%';
+  drawGraph(document.getElementById('gmSvg'),cur.fn,cur.xr,cur.yr,320,220);
+  document.getElementById('gmTip').classList.remove('show');
+  document.getElementById('gmTip').innerHTML='';
+  document.getElementById('gmNext').style.display='none';
+  const od=document.getElementById('gmOpts');od.innerHTML='';
+  const letters='ABCD';
+  cur.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt-btn';
+    b.innerHTML=`<span class="opt-letter">${letters[i]}</span>${o}`;
+    b.onclick=()=>onGMClick(i);od.appendChild(b);
+  });
+}
+function onGMClick(i){
+  if(gmFb)return;
+  const cur=gmQs[gmI],ok=i===cur.ci;
+  gmSel=i;gmFb=ok?'correct':'wrong';
+  if(ok){gmOk++;totalC++;xp+=15;}doStreak(ok);
+  const btns=document.getElementById('gmOpts').children;
+  for(let j=0;j<btns.length;j++){
+    btns[j].classList.add('locked');
+    if(j===cur.ci)btns[j].classList.add('correct');
+    else if(j===i&&!ok)btns[j].classList.add('wrong');
+  }
+  const tip=document.getElementById('gmTip');
+  tip.innerHTML=`<b>${ok?'✓ Correct!':'✗ Wrong.'}</b> ${cur.info}`;
+  tip.classList.add('show');
+  document.getElementById('gmNext').style.display='block';
+}
+function nextGM(){
+  if(gmI+1>=gmQs.length){showResults('Graph Match',gmOk,gmQs.length);}
+  else{gmI++;gmFb=null;gmSel=null;renderGM();}
+}
+
+// ============ RAPID FIRE ============
+function startRF(){
+  rfQs=shuffle(RQ).slice(0,20);rfI=0;rfOk=0;rfFb=null;rfSel=null;rfTime=15;
+  showScreen('rf');renderRF();startRFTimer();
+}
+function renderRF(){
+  const cur=rfQs[rfI];
+  document.getElementById('rfCounter').textContent=`${rfI+1}/${rfQs.length}`;
+  document.getElementById('rfProg').style.width=(rfI/rfQs.length*100)+'%';
+  document.getElementById('rfBadge').textContent=`#${cur.n} — ${cur.t}`;
+  document.getElementById('rfQuestion').textContent=cur.q;
+  const td=document.getElementById('rfTimer');td.textContent=rfTime;td.style.display='block';
+  td.className='timer'+(rfTime<=5?' danger':rfTime<=10?' warn':'');
+  document.getElementById('rfTimeout').style.display='none';
+  document.getElementById('rfTip').classList.remove('show');
+  document.getElementById('rfTip').innerHTML='';
+  document.getElementById('rfNext').style.display='none';
+  const od=document.getElementById('rfOpts');od.innerHTML='';
+  const letters='ABCD';
+  cur.o.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt-btn';
+    b.innerHTML=`<span class="opt-letter">${letters[i]}</span>${o}`;
+    b.onclick=()=>onRFClick(i);od.appendChild(b);
+  });
+}
+function startRFTimer(){
+  stopRFTimer();rfTime=15;
+  rfInterval=setInterval(()=>{
+    rfTime--;
+    const td=document.getElementById('rfTimer');
+    td.textContent=rfTime;td.className='timer'+(rfTime<=5?' danger':rfTime<=10?' warn':'');
+    if(rfTime<=0){stopRFTimer();rfFb='timeout';doStreak(false);
+      td.style.display='none';
+      document.getElementById('rfTimeout').style.display='block';
+      document.getElementById('rfTimeout').innerHTML='<span style="color:var(--rd);font-weight:700">⏱ Time\'s up!</span>';
+      const cur=rfQs[rfI];const btns=document.getElementById('rfOpts').children;
+      for(let j=0;j<btns.length;j++){btns[j].classList.add('locked');if(j===cur.a)btns[j].classList.add('correct');}
+      const tip=document.getElementById('rfTip');tip.innerHTML=`<b>⏱ Timed out.</b> ${cur.tip}`;tip.classList.add('show');
+      document.getElementById('rfNext').style.display='block';
+    }
+  },1000);
+}
+function stopRFTimer(){if(rfInterval){clearInterval(rfInterval);rfInterval=null;}}
+function onRFClick(i){
+  if(rfFb)return;stopRFTimer();
+  const cur=rfQs[rfI],ok=i===cur.a;
+  rfSel=i;rfFb=ok?'correct':'wrong';
+  if(ok){rfOk++;totalC++;xp+=10+Math.floor(rfTime/3);}doStreak(ok);
+  document.getElementById('rfTimer').style.display='none';
+  const btns=document.getElementById('rfOpts').children;
+  for(let j=0;j<btns.length;j++){btns[j].classList.add('locked');if(j===cur.a)btns[j].classList.add('correct');else if(j===i&&!ok)btns[j].classList.add('wrong');}
+  const tip=document.getElementById('rfTip');tip.innerHTML=`<b>${ok?'✓ Correct!':'✗ Wrong.'}</b> ${cur.tip}`;tip.classList.add('show');
+  document.getElementById('rfNext').style.display='block';
+}
+function nextRF(){
+  if(rfI+1>=rfQs.length){showResults('Rapid Fire',rfOk,rfQs.length);}
+  else{rfI++;rfFb=null;rfSel=null;renderRF();startRFTimer();}
+}
+
+// ============ RESULTS ============
+function showResults(mode,correct,total){
+  const pct=Math.round(correct/total*100);
+  const cls=pct>=80?'great':pct>=60?'ok':'bad';
+  document.getElementById('resContent').innerHTML=`
+    <h2>${mode} Complete</h2>
+    <div class="score-big ${cls}">${pct}%</div>
+    <div style="color:var(--dm);font-size:14px;margin-bottom:24px">${correct}/${total} correct${bestStreak>1?' · Best streak: 🔥'+bestStreak:''}</div>
+    <button class="btn btn-primary" onclick="showScreen('menu')">Play Again</button>
+  `;
+  showScreen('res');updateHdr();
+}
+
+updateHdr();
+</script>
+</body>
+</html>
