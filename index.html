@@ -7,521 +7,437 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0a0e1a;--sf:#111827;--sf2:#1a2236;--bd:#2a3350;--tx:#e8eaf0;--dm:#6b7394;--ac:#6c63ff;--ac2:#22d3ee;--gn:#34d399;--rd:#f87171;--or:#fbbf24}
-body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif}
+body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
 .hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:var(--sf);border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:8px}
-.hdr b{color:var(--tx)}.hdr .gn{color:var(--gn)}
-.hdr-logo{font-size:15px;font-weight:700;cursor:pointer}.hdr-logo span{color:var(--ac)}
+.hdr-logo{font-size:15px;font-weight:700}.hdr-logo span{color:var(--ac)}
 .hdr-stats{display:flex;gap:14px;font-size:12px;color:var(--dm);align-items:center;flex-wrap:wrap}
-.xpb{width:60px;height:3px;background:var(--sf2);border-radius:2px;overflow:hidden}.xpf{height:100%;background:var(--ac);border-radius:2px;transition:width .3s}
-.stk{padding:2px 8px;border-radius:12px;background:rgba(251,191,36,.15);color:var(--or);font-size:11px;font-weight:700;display:none}.stk.show{display:inline}
-.wrap{max-width:720px;margin:0 auto;padding:28px 18px}
+.hdr-stats b{color:var(--tx)}.hdr-stats .gn{color:var(--gn)}
+.xp-bar{width:60px;height:3px;background:var(--sf2);border-radius:2px;overflow:hidden}
+.xp-fill{height:100%;background:var(--ac);border-radius:2px;transition:width .3s}
+.streak-badge{padding:2px 8px;border-radius:12px;background:rgba(251,191,36,.15);color:var(--or);font-size:11px;font-weight:700;display:none}
+.streak-badge.show{display:inline}
+.wrap{max-width:680px;margin:0 auto;padding:28px 18px}
 .screen{display:none}.screen.active{display:block}
-h2{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px}
-.sub{color:var(--dm);font-size:13px;margin-bottom:20px}
-/* Topic cards */
-.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-bottom:16px}
-.tc{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s}
-.tc:hover{border-color:var(--ac);background:var(--sf2)}
-.tc-num{display:inline-block;width:22px;height:22px;border-radius:5px;background:var(--sf2);text-align:center;line-height:22px;font-size:11px;font-weight:700;color:var(--dm);margin-right:8px}
-.tc-name{font-size:13px;font-weight:600;display:inline}
-.tc-tag{font-size:10px;color:var(--dm);margin-top:4px}
-.tc-bar{height:3px;background:var(--sf2);border-radius:2px;margin-top:8px;overflow:hidden}
-.tc-fill{height:100%;border-radius:2px;transition:width .3s}
-/* Category headers */
-.cat{font-size:11px;font-weight:700;color:var(--dm);text-transform:uppercase;letter-spacing:1px;margin:18px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--bd)}
-/* Topic detail */
-.tabs{display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid var(--bd)}
-.tab{padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--dm);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
-.tab.active{color:var(--ac);border-bottom-color:var(--ac)}
-.tab:hover{color:var(--tx)}
-/* Learn cards */
-.learn-card{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:18px;margin-bottom:12px}
-.learn-title{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.learn-title .icon{font-size:18px}
-.learn-body{font-size:13px;color:var(--dm);line-height:1.7}
-.learn-body b{color:var(--tx)}
-.formula{font-family:monospace;background:var(--sf2);padding:8px 14px;border-radius:6px;border-left:3px solid var(--ac);margin:8px 0;font-size:13px;color:var(--ac2);display:block;line-height:1.6;white-space:pre-wrap}
-.example{background:var(--sf2);border-radius:8px;padding:12px 14px;margin:8px 0;font-size:13px;line-height:1.6}
-.example .step{color:var(--dm);margin-bottom:2px}
-.example .result{color:var(--gn);font-weight:600}
-/* Quiz within topic */
-.prog{height:4px;background:var(--sf2);border-radius:2px;margin-bottom:16px;overflow:hidden}
-.prof{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:2px;transition:width .3s}
-.qr{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;color:var(--dm)}
+h2{font-size:24px;font-weight:700;margin-bottom:4px}
+.sub{color:var(--dm);font-size:13px;margin-bottom:24px}
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.mode-card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:18px 16px;cursor:pointer;transition:all .15s}
+.mode-card:hover{border-color:var(--ac);background:var(--sf2)}
+.mode-icon{font-size:26px;margin-bottom:6px}
+.mode-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.mode-desc{font-size:11px;color:var(--dm);line-height:1.4}
+.prog{height:4px;background:var(--sf2);border-radius:2px;margin-bottom:20px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:2px;transition:width .3s}
+.q-row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px;color:var(--dm)}
 .badge{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--sf2);border:1px solid var(--bd);color:var(--ac)}
-.qt{font-size:17px;font-weight:700;line-height:1.4;margin-bottom:14px}
-.ob{display:block;width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:14px;text-align:left;cursor:pointer;margin-bottom:8px;font-family:inherit;transition:all .15s}
-.ob:hover:not(.lk){border-color:var(--ac);background:var(--sf2)}
-.ob.lk{cursor:default}.ob.ok{border-color:var(--gn);background:rgba(52,211,153,.1);color:var(--gn)}
-.ob.no{border-color:var(--rd);background:rgba(248,113,113,.1);color:var(--rd)}
-.ol{font-family:monospace;margin-right:8px;opacity:.5}
-.tip{margin-top:12px;padding:12px 16px;background:var(--sf);border-radius:10px;border-left:3px solid var(--ac);font-size:13px;color:var(--dm);line-height:1.6;display:none}
-.tip.show{display:block}.tip b{color:var(--tx)}
+.q-text{font-size:18px;font-weight:700;line-height:1.4;margin-bottom:16px}
+.opt-btn{display:block;width:100%;padding:13px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:14px;text-align:left;cursor:pointer;margin-bottom:8px;font-family:inherit;transition:all .15s}
+.opt-btn:hover:not(.locked){border-color:var(--ac);background:var(--sf2)}
+.opt-btn.locked{cursor:default}
+.opt-btn.correct{border-color:var(--gn);background:rgba(52,211,153,.1);color:var(--gn)}
+.opt-btn.wrong{border-color:var(--rd);background:rgba(248,113,113,.1);color:var(--rd)}
+.opt-letter{font-family:monospace;margin-right:8px;opacity:.5}
+.tip-box{margin-top:14px;padding:12px 16px;background:var(--sf);border-radius:10px;border-left:3px solid var(--ac);font-size:13px;color:var(--dm);line-height:1.6;display:none}
+.tip-box.show{display:block}
+.tip-box b{color:var(--tx)}
 .btn{padding:10px 22px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
-.btn:hover{border-color:var(--ac)}.bp{background:var(--ac);color:#fff;border-color:var(--ac)}.bp:hover{opacity:.9}
-.ctr{text-align:center}.mt{margin-top:14px}.mr{text-align:right}
-.timer{font-size:28px;font-weight:700;font-family:monospace;text-align:center;margin-bottom:8px;color:var(--ac2)}
-.timer.w{color:var(--or)}.timer.d{color:var(--rd)}
-/* Unit circle SVG */
-.uc-wrap{display:flex;justify-content:center;margin-bottom:14px}
-/* Graph SVG */
-.g-wrap{display:flex;justify-content:center;margin-bottom:14px}
-/* Score */
-.scr{font-size:56px;font-weight:700;letter-spacing:-3px;margin:12px 0}
-.scr.g{color:var(--gn)}.scr.o{color:var(--or)}.scr.b{color:var(--rd)}
-/* Responsive */
-@media(max-width:500px){.tg{grid-template-columns:1fr}.wrap{padding:20px 14px}h2{font-size:19px}}
+.btn:hover{border-color:var(--ac)}
+.btn-primary{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn-primary:hover{opacity:.9}
+.timer{font-size:30px;font-weight:700;font-family:monospace;text-align:center;margin-bottom:10px;color:var(--ac2)}
+.timer.warn{color:var(--or)}.timer.danger{color:var(--rd)}
+.center{text-align:center}
+.mt{margin-top:14px}.mr{text-align:right}
+.score-big{font-size:60px;font-weight:700;letter-spacing:-3px;margin:14px 0}
+.score-big.great{color:var(--gn)}.score-big.ok{color:var(--or)}.score-big.bad{color:var(--rd)}
+.uc-center{display:flex;justify-content:center;margin-bottom:14px}
+.fb-text{text-align:center;font-size:14px;font-weight:700}
+.fb-detail{color:var(--dm);font-weight:400;margin-top:4px;font-size:12px}
+.graph-center{display:flex;justify-content:center;margin-bottom:16px}
 </style>
 </head>
 <body>
+
 <div class="hdr">
-  <div class="hdr-logo" onclick="showScreen('menu')">Pre-Calc Final <span>// Walters</span></div>
+  <div class="hdr-logo">Pre-Calc Final <span>// Walters</span></div>
   <div class="hdr-stats">
-    <span>LVL <b id="hLv">1</b></span>
-    <div class="xpb"><div class="xpf" id="hXp"></div></div>
-    <span><b id="hXv">0</b>XP</span>
-    <span class="stk" id="hStk">🔥<span id="hSv">0</span></span>
-    <span>✓<b class="gn" id="hTc">0</b></span>
+    <span>LVL <b id="level">1</b></span>
+    <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    <span><b id="xpVal">0</b>XP</span>
+    <span class="streak-badge" id="streakBadge">🔥<span id="streakVal">0</span></span>
+    <span>✓<b class="gn" id="totalCorrect">0</b></span>
   </div>
 </div>
 
-<div class="screen active" id="menuScreen"><div class="wrap">
-  <h2>Pre-Calc Final Review</h2>
-  <p class="sub">Pick a topic to learn it, then practice. Progress bars track mastery.</p>
-  <div id="topicMenu"></div>
-</div></div>
+<!-- MENU -->
+<div class="screen active" id="menuScreen">
+  <div class="wrap">
+    <h2>Choose your game</h2>
+    <p class="sub">Each mode teaches differently. Mix them up.</p>
+    <div class="mode-grid" id="modeGrid"></div>
+  </div>
+</div>
 
-<div class="screen" id="topicScreen"><div class="wrap" id="topicContent"></div></div>
-<div class="screen" id="quizScreen"><div class="wrap" id="quizContent"></div></div>
-<div class="screen" id="ucScreen"><div class="wrap" id="ucContent"></div></div>
-<div class="screen" id="resScreen"><div class="wrap" id="resContent"></div></div>
+<!-- UNIT CIRCLE -->
+<div class="screen" id="ucScreen">
+  <div class="wrap">
+    <div class="prog"><div class="prog-fill" id="ucProg"></div></div>
+    <div class="q-row"><span id="ucCounter"></span><span class="badge">Unit Circle</span></div>
+    <div class="q-text" id="ucPrompt"></div>
+    <div class="uc-center"><svg id="ucSvg" width="310" height="310"></svg></div>
+    <div id="ucFeedback" style="display:none"></div>
+    <div class="center mt"><button class="btn" onclick="showScreen('menu')">← Menu</button></div>
+  </div>
+</div>
+
+<!-- GRAPH MATCH -->
+<div class="screen" id="gmScreen">
+  <div class="wrap">
+    <div class="prog"><div class="prog-fill" id="gmProg"></div></div>
+    <div class="q-row"><span id="gmCounter"></span><span class="badge">Graph Match</span></div>
+    <div class="q-text">Which equation matches this graph?</div>
+    <div class="graph-center"><svg id="gmSvg" width="320" height="220"></svg></div>
+    <div id="gmOpts"></div>
+    <div class="tip-box" id="gmTip"></div>
+    <div class="mr mt" id="gmNext" style="display:none"><button class="btn btn-primary" onclick="nextGM()">Next →</button></div>
+    <div class="center mt"><button class="btn" onclick="showScreen('menu')">← Menu</button></div>
+  </div>
+</div>
+
+<!-- RAPID FIRE -->
+<div class="screen" id="rfScreen">
+  <div class="wrap">
+    <div class="prog"><div class="prog-fill" id="rfProg"></div></div>
+    <div class="q-row"><span id="rfCounter"></span><span class="badge" id="rfBadge"></span></div>
+    <div class="timer" id="rfTimer">15</div>
+    <div class="q-text" id="rfQuestion"></div>
+    <div id="rfOpts"></div>
+    <div id="rfTimeout" style="display:none" class="center fb-text" style="color:var(--rd)"></div>
+    <div class="tip-box" id="rfTip"></div>
+    <div class="mr mt" id="rfNext" style="display:none"><button class="btn btn-primary" onclick="nextRF()">Next →</button></div>
+    <div class="center mt"><button class="btn" onclick="stopRFTimer();showScreen('menu')">← Menu</button></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="resScreen">
+  <div class="wrap center" id="resContent"></div>
+</div>
 
 <script>
-// ===== GLOBALS =====
-let xp=0,streak=0,best=0,totC=0;
-let topicScores={};// topicNum -> {correct,attempted}
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function updHdr(){
-  const lv=Math.floor(xp/100)+1;
-  document.getElementById('hLv').textContent=lv;
-  document.getElementById('hXp').style.width=(xp%100)+'%';
-  document.getElementById('hXv').textContent=xp;
-  document.getElementById('hTc').textContent=totC;
-  const s=document.getElementById('hStk');
-  if(streak>=2){s.classList.add('show');document.getElementById('hSv').textContent=streak;}else s.classList.remove('show');
-}
-function doStreak(ok){if(ok){streak++;if(streak>best)best=streak;}else streak=0;updHdr();}
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id+'Screen').classList.add('active');window.scrollTo(0,0);}
-function getScore(n){return topicScores[n]||{c:0,a:0};}
-function addScore(n,ok){if(!topicScores[n])topicScores[n]={c:0,a:0};topicScores[n].a++;if(ok)topicScores[n].c++;renderMenu();}
-
-// ===== TOPIC DATA =====
-const TOPICS=[
-{n:1,cat:"f(x)",name:"Parent Functions / Transformations",
-learn:[
-{title:"The 6 Parent Functions",icon:"📐",body:`Know these shapes cold:<b>
-• y = x (line through origin)
-• y = x² (U-shape parabola)
-• y = x³ (S-curve through origin)
-• y = |x| (V-shape)
-• y = √x (starts at origin, curves right)
-• y = 1/x (two curves in Q1 and Q3)</b>`},
-{title:"Transformation Rules",icon:"🔄",body:`For <b>f(x) = a·(parent)(x - h) + k</b>:
-<span class="formula">• h shifts LEFT/RIGHT (opposite sign! x-h = right h)
-• k shifts UP/DOWN (same sign)
-• a > 1 = vertical stretch, 0 < a < 1 = compress
-• Negative a = reflect over x-axis
-• Negative inside = reflect over y-axis</span>
-<b>Order matters:</b> reflections/stretches first, then shifts.`},
-{title:"Worked Example",icon:"✏️",body:`<div class="example"><div class="step">Given: g(x) = -(x+3)² + 5. Parent?</div><div class="step">Parent = x². Now read transformations:</div><div class="step">• Negative out front → <b>reflect over x-axis</b></div><div class="step">• (x+3) → <b>left 3</b> (opposite sign!)</div><div class="step">• +5 → <b>up 5</b></div><div class="result">Vertex moves from (0,0) to (-3, 5), opens down.</div></div>`}
-],
-qs:[
-{q:"g(x) = -(x+3)² + 5 — all transformations from x²?",o:["Reflect x-axis, left 3, up 5","Reflect y-axis, right 3, up 5","Left 3, down 5","Right 3, up 5"],a:0,t:"Negative = reflect x-axis. +3 inside = left. +5 = up."},
-{q:"Parent function of f(x) = 3|x-2| + 1?",o:["|x|","x²","√x","x³"],a:0,t:"Absolute value bars → parent is |x|."},
-{q:"f(x) = √(x-4) - 2. New starting point?",o:["(4, -2)","(-4, 2)","(-4, -2)","(4, 2)"],a:0,t:"√x starts at (0,0). Right 4, down 2 → (4,-2)."},
-{q:"Which parent function makes a V-shape?",o:["|x|","x²","√x","1/x"],a:0,t:"Absolute value = V. Quadratic = U."},
-{q:"In f(x) = 2(x-1)³ + 3, what does the 2 do?",o:["Vertical stretch by 2","Horizontal stretch","Shift up 2","Shift right 2"],a:0,t:"Coefficient outside = vertical stretch."},
-]},
-
-{n:2,cat:"f(x)",name:"Inverses / Domain & Range",
-learn:[
-{title:"Finding Inverses",icon:"🔁",body:`<b>Steps to find f⁻¹(x):</b>
-<span class="formula">1. Replace f(x) with y
-2. Swap x and y
-3. Solve for y
-4. Replace y with f⁻¹(x)</span>
-<div class="example"><div class="step">f(x) = 2x + 6</div><div class="step">y = 2x + 6 → x = 2y + 6 → x - 6 = 2y</div><div class="result">f⁻¹(x) = (x-6)/2</div></div>`},
-{title:"Domain & Range",icon:"📏",body:`<b>Domain</b> = all valid x inputs. <b>Range</b> = all possible y outputs.
-Key restrictions:
-<span class="formula">• √(stuff) → stuff ≥ 0 (can't square root negatives)
-• 1/(stuff) → stuff ≠ 0 (can't divide by zero)
-• log(stuff) → stuff > 0</span>
-<b>Transformations shift domain/range:</b> f(x) = √(x-3)+1 → domain x ≥ 3, range y ≥ 1.`},
-{title:"Inverse = Reflection over y = x",icon:"🪞",body:`The graph of f⁻¹(x) is f(x) reflected over the line y = x. Domain of f becomes range of f⁻¹, and vice versa. If f(2) = 5, then f⁻¹(5) = 2.`}
-],
-qs:[
-{q:"Inverse of f(x) = 2x + 6?",o:["(x-6)/2","(x+6)/2","2x-6","x/2-6"],a:0,t:"Swap: x=2y+6 → y=(x-6)/2."},
-{q:"Range of f(x) = √(x-3) + 1?",o:["y ≥ 1","y ≥ 3","y ≥ 0","All reals"],a:0,t:"√ ≥ 0, +1 shifts to y ≥ 1."},
-{q:"f(x) = x² with domain x ≥ 0. Inverse?",o:["√x","±√x","x²","-√x"],a:0,t:"Restricted domain makes it 1-to-1. Inverse = √x."},
-{q:"If f(3) = 7, then f⁻¹(7) = ?",o:["3","7","1/7","1/3"],a:0,t:"Inverse swaps input/output. f(3)=7 → f⁻¹(7)=3."},
-]},
-
-{n:3,cat:"p(x)",name:"Synthetic Division",
-learn:[
-{title:"How Synthetic Division Works",icon:"➗",body:`Only works for dividing by <b>(x - c)</b>. Use <b>c</b> in the box.
-<span class="formula">For (x - 3): use 3 in box
-For (x + 2): use -2 in box (since x+2 = x-(-2))</span>`},
-{title:"Step-by-Step Process",icon:"📝",body:`<div class="example"><div class="step">Divide (x³ - 1) ÷ (x + 2)</div><div class="step">Coefficients: 1, 0, 0, -1 (don't forget 0 placeholders!)</div><div class="step">Use -2 in box (since x+2 = x-(-2))</div><div class="step">Bring down 1. Multiply 1×(-2)=-2, add to 0 = -2</div><div class="step">Multiply -2×(-2)=4, add to 0 = 4</div><div class="step">Multiply 4×(-2)=-8, add to -1 = -9</div><div class="result">Quotient: x² - 2x + 4, Remainder: -9</div></div>
-<b>Key:</b> Always include 0s for missing terms!`}
-],
-qs:[
-{q:"Dividing by (x-3), what goes in the box?",o:["3","-3","1/3","x"],a:0,t:"(x-c) → use c. So use 3."},
-{q:"(x³-1) ÷ (x+2) remainder?",o:["-9","7","-7","9"],a:0,t:"Coeffs 1,0,0,-1. Use -2. Remainder = -9."},
-{q:"Dividing by (x+5), what value do you use?",o:["-5","5","1/5","-1/5"],a:0,t:"x+5 = x-(-5). Use -5."},
-{q:"What must you do if the polynomial is missing an x² term?",o:["Use 0 as its coefficient","Skip it","Use 1","Use the leading coefficient"],a:0,t:"Always include 0 placeholders for missing terms."},
-]},
-
-{n:4,cat:"p(x)",name:"Complex Roots",
-learn:[
-{title:"Conjugate Root Theorem",icon:"🔗",body:`If a polynomial has <b>real coefficients</b>, complex roots always come in <b>conjugate pairs</b>.
-<span class="formula">If (a + bi) is a root → (a - bi) must also be a root
-If 2i is a root → -2i is also a root
-If 3+i is a root → 3-i is also a root</span>
-<b>This means:</b> complex roots always add an even number of roots.`},
-{title:"Counting Roots",icon:"🔢",body:`A degree-n polynomial has <b>exactly n roots</b> (counting multiplicity).
-<div class="example"><div class="step">Degree 5 poly with roots: 2, -1, 3+i</div><div class="step">3+i forces 3-i (conjugate pair) → 4 roots known</div><div class="result">There must be 1 more real root (5 total needed).</div></div>`}
-],
-qs:[
-{q:"If 2i is a root (real coefficients), what else must be a root?",o:["-2i","2","-2","4i"],a:0,t:"Conjugate of 2i is -2i."},
-{q:"Degree 4 poly with roots 1, -1, 2+3i. What's the 4th root?",o:["2-3i","-2+3i","-2-3i","3+2i"],a:0,t:"Conjugate of 2+3i is 2-3i."},
-{q:"Can a degree-3 polynomial with real coefficients have exactly 2 complex roots?",o:["Yes — the 3rd root is real","No — complex roots come in pairs so it's impossible","Only if one is purely imaginary","Only with repeated roots"],a:0,t:"2 complex roots (a conjugate pair) + 1 real root = 3. ✓"},
-]},
-
-{n:5,cat:"p(x)",name:"Rational Root Theorem",
-learn:[
-{title:"The RRT Formula",icon:"📋",body:`Possible rational roots = <b>±(factors of constant term) / (factors of leading coefficient)</b>
-<span class="formula">P(x) = 2x³ - 3x + 1
-Constant = 1 → factors: 1
-Leading coeff = 2 → factors: 1, 2
-Possible roots: ±1/1, ±1/2 = ±1, ±1/2</span>
-<b>These are POSSIBLE roots.</b> You still test them with synthetic division.`},
-{title:"Bigger Example",icon:"✏️",body:`<div class="example"><div class="step">P(x) = -4x⁵ + 2x³ - 17x + 6</div><div class="step">Constant = 6 → factors: 1, 2, 3, 6</div><div class="step">Leading = 4 → factors: 1, 2, 4</div><div class="result">Possible: ±1, ±2, ±3, ±6, ±1/2, ±3/2, ±1/4, ±3/4</div></div>`}
-],
-qs:[
-{q:"P(x)=2x³-3x+1. Possible rational roots = ±(factors of __) / (factors of __)?",o:["1 over 2","2 over 1","3 over 2","1 over 3"],a:0,t:"Constant=1, Lead=2."},
-{q:"P(x)=3x⁴-x+2. Which is NOT a possible rational root?",o:["±1/4","±1","±2","±2/3"],a:0,t:"Factors of 2: 1,2. Factors of 3: 1,3. 1/4 isn't possible."},
-]},
-
-{n:6,cat:"p(x)",name:"Long Division",
-learn:[
-{title:"When to Use Long Division",icon:"📏",body:`Synthetic division <b>only works for (x - c)</b> — linear divisors.
-If the divisor is degree 2 or higher (like x²+1), you <b>must</b> use polynomial long division. It works like regular long division: divide, multiply, subtract, bring down.`}
-],
-qs:[
-{q:"When must you use long division instead of synthetic?",o:["Divisor is degree 2+","Dividend has negatives","Lead coeff > 1","Never needed"],a:0,t:"Synthetic only works for (x-c)."},
-{q:"What technique finds the slant asymptote of a rational function?",o:["Long or synthetic division","Factoring","Completing the square","Substitution"],a:0,t:"Divide numerator by denominator. Quotient = slant asymptote."},
-]},
-
-{n:7,cat:"p(x)",name:"Sketch Polynomials",
-learn:[
-{title:"End Behavior",icon:"↗️",body:`Determined by <b>degree</b> and <b>sign of leading coefficient</b>:
-<span class="formula">Even degree + positive lead: ↑ both ends (U)
-Even degree + negative lead: ↓ both ends (∩)
-Odd degree + positive lead: ↙ left ↗ right
-Odd degree + negative lead: ↗ left ↙ right</span>`},
-{title:"Multiplicity at Zeros",icon:"🎯",body:`The exponent on each factor tells you what happens at that x-intercept:
-<span class="formula">Odd multiplicity (1, 3, 5...) = CROSSES the x-axis
-Even multiplicity (2, 4, 6...) = BOUNCES (touches & turns)</span>
-<div class="example"><div class="step">P(x) = -x(x-3)²(x+5)³</div><div class="step">x=0: mult 1 (odd) → crosses</div><div class="step">x=3: mult 2 (even) → bounces</div><div class="step">x=-5: mult 3 (odd) → crosses (with inflection)</div><div class="result">Degree = 1+2+3 = 6, lead = -1 → falls both ends</div></div>`}
-],
-qs:[
-{q:"At x=-1 in P(x)=2(x+1)²(x-4), the graph:",o:["Bounces","Crosses","Has a cusp","Undefined"],a:0,t:"Even multiplicity (²) = bounce."},
-{q:"End behavior of -3x⁵ + ...?",o:["Rises left, falls right","Falls left, rises right","Falls both","Rises both"],a:0,t:"Odd degree + negative lead: ↗ left, ↘ right."},
-{q:"P(x) = 2(x-1)³(x+2). At x=1, the graph:",o:["Crosses with inflection","Bounces","Crosses straight","Is tangent"],a:0,t:"Mult 3 (odd) = crosses. Odd ≥ 3 has inflection-style crossing."},
-{q:"Degree of P(x) = (x+2)²(x-1)(x+1)²?",o:["5","4","3","6"],a:0,t:"Add exponents: 2+1+2 = 5."},
-]},
-
-{n:8,cat:"q(x)",name:"Vertical & Horizontal Asymptotes",
-learn:[
-{title:"Vertical Asymptotes",icon:"📍",body:`Factor the rational function. Cancel common factors (those become holes). <b>Remaining denominator zeros = VAs.</b>
-<div class="example"><div class="step">f(x) = (3x-12)/(x-3) = 3(x-4)/(x-3)</div><div class="step">Nothing cancels. Denominator = 0 at x=3.</div><div class="result">VA: x = 3. (x=4 is an x-intercept, not a VA)</div></div>`},
-{title:"Horizontal Asymptotes — The Degree Rules",icon:"📏",body:`Compare degree of numerator (N) vs denominator (D):
-<span class="formula">N < D → HA: y = 0 (bottom overpowers)
-N = D → HA: y = leading coefficients ratio
-N > D → NO HA (but maybe a slant asymptote)</span>
-<div class="example"><div class="step">f(x) = (2x²+1)/(x²-4)</div><div class="step">Same degree (both 2). Ratio = 2/1</div><div class="result">HA: y = 2</div></div>`}
-],
-qs:[
-{q:"Degree top < degree bottom → HA is:",o:["y = 0","Lead coeff ratio","No HA","y = 1"],a:0,t:"Bottom overpowers → y = 0."},
-{q:"f(x)=(2x²+1)/(x²-4). HA?",o:["y = 2","y = 0","y = -1/4","No HA"],a:0,t:"Same degree → 2/1 = 2."},
-{q:"f(x)=(x³+1)/(x²-1). HA?",o:["No HA (slant instead)","y = 1","y = 0","y = x"],a:0,t:"Degree top (3) > bottom (2) → no HA. Slant exists since difference is 1."},
-{q:"VA of f(x)=(x+2)/(x²-4)?",o:["x = 2 only","x = -2 only","x = 2 and x = -2","No VA"],a:0,t:"x²-4=(x+2)(x-2). (x+2) cancels → hole at x=-2. x=2 remains → VA at x=2."},
-]},
-
-{n:9,cat:"q(x)",name:"Holes",
-learn:[
-{title:"Hole vs Vertical Asymptote",icon:"🕳️",body:`<b>Factor top and bottom completely.</b> Then:
-<span class="formula">Common factors that CANCEL → HOLE at that x-value
-Remaining denominator zeros → VERTICAL ASYMPTOTE</span>
-To find the y-coordinate of a hole: plug the x-value into the <b>simplified</b> function.
-<div class="example"><div class="step">f(x) = (x²-4)/(x²-x-2) = (x-2)(x+2)/((x-2)(x+1))</div><div class="step">(x-2) cancels → hole at x = 2</div><div class="step">Simplified: (x+2)/(x+1). Plug in x=2: 4/3</div><div class="result">Hole at (2, 4/3). VA at x = -1.</div></div>`}
-],
-qs:[
-{q:"f(x)=(x²-4)/(x²-x-2). Hole where?",o:["x = 2","x = -2","x = -1","No hole"],a:0,t:"(x-2) cancels → hole at x=2."},
-{q:"Hole vs VA?",o:["Hole=cancelled factor, VA=remaining denom zero","Same thing","Hole at origin only","VA only with even degree"],a:0,t:"Factor, simplify. Cancelled → hole. Leftover → VA."},
-]},
-
-{n:10,cat:"q(x)",name:"Slant Asymptotes",
-learn:[
-{title:"When & How",icon:"📐",body:`Slant (oblique) asymptote exists when <b>degree of numerator = degree of denominator + 1</b>.
-Find it by doing <b>long or synthetic division</b>. The quotient (ignoring remainder) is the slant asymptote.
-<div class="example"><div class="step">f(x) = (x²+3x+5)/(x+1)</div><div class="step">Degree 2 top, degree 1 bottom → slant exists</div><div class="step">Synthetic division with -1: 1, 3, 5 → quotient x+2, remainder 3</div><div class="result">Slant asymptote: y = x + 2</div></div>`}
-],
-qs:[
-{q:"When does a slant asymptote exist?",o:["Deg top = deg bottom + 1","Degrees equal","Deg bottom > top","Always"],a:0,t:"Num degree exactly 1 more → slant."},
-{q:"Slant asymptote of (x²+3x+5)/(x+1)?",o:["y = x + 2","y = x + 3","y = x + 4","y = x - 2"],a:0,t:"Synthetic div: quotient = x+2."},
-]},
-
-{n:11,cat:"exp/log",name:"Solve Exponential Equations",
-learn:[
-{title:"Same-Base Method",icon:"⚡",body:`If you can rewrite both sides with the <b>same base</b>, set the exponents equal.
-<span class="formula">If bˣ = bʸ, then x = y</span>
-<div class="example"><div class="step">3^(2x) = 81</div><div class="step">81 = 3⁴</div><div class="step">3^(2x) = 3⁴ → 2x = 4</div><div class="result">x = 2</div></div>
-<div class="example"><div class="step">4^x = 8</div><div class="step">4 = 2², 8 = 2³ → (2²)^x = 2³ → 2^(2x) = 2³</div><div class="result">2x = 3 → x = 3/2</div></div>`},
-{title:"When Bases Can't Match",icon:"📊",body:`Take <b>log of both sides</b>, then use power rule to bring down exponent.
-<span class="formula">5^x = 20 → x·ln(5) = ln(20) → x = ln(20)/ln(5)</span>`}
-],
-qs:[
-{q:"Solve: 3^(2x) = 81",o:["x = 2","x = 4","x = 3","x = 27"],a:0,t:"81=3⁴ → 2x=4 → x=2."},
-{q:"Solve: 4^x = 8",o:["x = 3/2","x = 2","x = 2/3","x = 1/2"],a:0,t:"(2²)^x=2³ → 2x=3 → x=3/2."},
-{q:"Solve: 5^(x+1) = 125",o:["x = 2","x = 3","x = 4","x = 24"],a:0,t:"125=5³ → x+1=3 → x=2."},
-]},
-
-{n:12,cat:"exp/log",name:"Solve Log Equations",
-learn:[
-{title:"Log Definition",icon:"📖",body:`<span class="formula">log_b(x) = y  means  b^y = x</span>
-<div class="example"><div class="step">log₂(32) = ? → 2^? = 32 → 2⁵ = 32</div><div class="result">log₂(32) = 5</div></div>`},
-{title:"Key Properties (from 4.4)",icon:"📋",body:`<span class="formula">log_b(1) = 0        (because b⁰ = 1)
-log_b(b) = 1        (because b¹ = b)
-log_b(b^x) = x      (log undoes exponent)
-b^(log_b(x)) = x    (exponent undoes log)</span>`},
-{title:"Three Expansion Rules",icon:"🔧",body:`<span class="formula">Product: log_b(uv) = log_b(u) + log_b(v)
-Quotient: log_b(u/v) = log_b(u) - log_b(v)
-Power: log_b(u^n) = n·log_b(u)</span>
-<div class="example"><div class="step">Expand: log₃(x²y/z)</div><div class="step">= log₃(x²) + log₃(y) - log₃(z)</div><div class="result">= 2log₃(x) + log₃(y) - log₃(z)</div></div>`}
-],
-qs:[
-{q:"log₂(32) = ?",o:["5","4","6","16"],a:0,t:"2⁵=32."},
-{q:"log_b(1) = ?",o:["0","1","b","undefined"],a:0,t:"b⁰=1, so log_b(1)=0."},
-{q:"Expand: log₃(x²y/z)",o:["2log₃x + log₃y - log₃z","2log₃x · log₃y / log₃z","log₃(2x)+log₃(yz)","(log₃x)²+log₃y-log₃z"],a:0,t:"Product→add, quotient→sub, power→multiply."},
-{q:"Solve: log₅(x) = 3",o:["x = 125","x = 15","x = 243","x = 53"],a:0,t:"5³ = 125."},
-]},
-
-{n:13,cat:"trig",name:"Simple Trig Solve (0→2π)",
-learn:[
-{title:"The Process",icon:"🎯",body:`<b>1.</b> Find the <b>reference angle</b> (positive acute angle).
-<b>2.</b> Determine which <b>quadrants</b> the trig function is positive/negative.
-<b>3.</b> Place the reference angle in those quadrants.
-<span class="formula">sin positive: Q1, Q2    |  sin negative: Q3, Q4
-cos positive: Q1, Q4    |  cos negative: Q2, Q3
-tan positive: Q1, Q3    |  tan negative: Q2, Q4</span>`},
-{title:"Common Reference Angles",icon:"📐",body:`<span class="formula">sin = 1/2 → ref = 30°     sin = √2/2 → ref = 45°
-sin = √3/2 → ref = 60°   cos = 0 → 90°, 270°
-tan = 1 → ref = 45°      tan = √3 → ref = 60°</span>
-<div class="example"><div class="step">Solve sin θ = 1/2, 0 ≤ θ < 360°</div><div class="step">Ref angle = 30°. sin is positive in Q1 and Q2.</div><div class="result">θ = 30° and 180°-30° = 150°</div></div>`}
-],
-qs:[
-{q:"sin θ = 1/2 for 0≤θ<360°",o:["30° and 150°","60° and 120°","30° and 330°","150° and 210°"],a:0,t:"sin+ in Q1&Q2. Ref 30°."},
-{q:"cos θ = 0 for 0≤θ<360°",o:["90° and 270°","0° and 180°","0° and 360°","90° and 180°"],a:0,t:"cos=0 at 90° and 270°."},
-{q:"tan θ = -√3 for 0≤θ<360°",o:["120° and 300°","60° and 240°","150° and 330°","120° and 240°"],a:0,t:"Ref 60°. tan- in Q2&Q4."},
-{q:"cos θ = -√2/2 for 0≤θ<360°",o:["135° and 225°","45° and 315°","135° and 315°","225° and 315°"],a:0,t:"Ref 45°. cos- in Q2&Q3. 135°, 225°."},
-{q:"sin θ = -1 for 0≤θ<360°",o:["270°","90°","180°","0°"],a:0,t:"sin=-1 only at bottom of circle: 270°."},
-]},
-
-{n:14,cat:"trig",name:"Quadratic Trig Equations",
-learn:[
-{title:"Treat It Like Algebra",icon:"🔄",body:`Substitute <b>u = sinθ</b> (or cosθ), factor the quadratic, solve for u, then convert back to angles.
-<div class="example"><div class="step">2sin²θ - sinθ - 1 = 0</div><div class="step">Let u = sinθ: 2u² - u - 1 = 0</div><div class="step">Factor: (2u + 1)(u - 1) = 0</div><div class="step">u = -1/2 → sinθ = -1/2 → θ = 7π/6, 11π/6</div><div class="step">u = 1 → sinθ = 1 → θ = π/2</div><div class="result">Solutions: π/2, 7π/6, 11π/6</div></div>`}
-],
-qs:[
-{q:"2sin²θ - sinθ - 1 = 0 factors as:",o:["(2sinθ+1)(sinθ-1)","(2sinθ-1)(sinθ+1)","(sinθ+1)(sinθ-1)","(2sinθ+1)(sinθ+1)"],a:0,t:"Let u=sinθ → (2u+1)(u-1)."},
-{q:"First step to solve 2cos²θ + cosθ - 1 = 0?",o:["Let u=cosθ, factor 2u²+u-1","Divide everything by cosθ","Use quadratic formula on θ","Take square root of both sides"],a:0,t:"Substitute u=cosθ to see the quadratic structure, then factor."},
-]},
-
-{n:15,cat:"trig",name:"Sum/Difference & Half-Angle",
-learn:[
-{title:"Sum & Difference Formulas (7.1)",icon:"➕",body:`<span class="formula">cos(A ± B) = cosA·cosB ∓ sinA·sinB
-sin(A ± B) = sinA·cosB ± cosA·sinB</span>
-<b>Note:</b> cos uses OPPOSITE sign, sin uses SAME sign as the original ±.`},
-{title:"Finding cos(π/12)",icon:"🎯",body:`<div class="example"><div class="step">π/12 = π/3 - π/4 (find two known angles that combine)</div><div class="step">cos(π/3 - π/4) = cos(π/3)cos(π/4) + sin(π/3)sin(π/4)</div><div class="step">= (1/2)(√2/2) + (√3/2)(√2/2)</div><div class="result">= (√2 + √6)/4</div></div>`},
-{title:"Double Angle Formulas (7.2)",icon:"✖️",body:`<span class="formula">sin(2θ) = 2sinθ·cosθ
-cos(2θ) = cos²θ - sin²θ = 2cos²θ - 1 = 1 - 2sin²θ</span>
-All three cos(2θ) forms are equivalent. Pick whichever is convenient.`}
-],
-qs:[
-{q:"cos(π/12) = cos(___)?",o:["π/3 - π/4","π/6 - π/12","π/2 - π/3","π/4 + π/6"],a:0,t:"π/3-π/4 = π/12."},
-{q:"Valid forms of cos(2θ)?",o:["All: cos²θ-sin²θ, 2cos²θ-1, 1-2sin²θ","Only cos²θ-sin²θ","Only 2cos²θ-1","Only 1-2sin²θ"],a:0,t:"All three. From 7.2."},
-{q:"sin(2θ) = ?",o:["2sinθ·cosθ","sin²θ + cos²θ","2sinθ","sin²(2θ)"],a:0,t:"Double angle: sin(2θ) = 2sinθcosθ."},
-]},
-
-{n:16,cat:"trig",name:"Sine Graph → Equation",
-learn:[
-{title:"Reading a Sine Graph",icon:"📈",body:`For <b>y = A·sin(Bx + C) + D</b>:
-<span class="formula">A = amplitude (half the height, peak to midline)
-B → Period = 2π/|B|
-C → Phase shift = -C/B
-D = vertical shift (midline)</span>
-<div class="example"><div class="step">A sine curve: amplitude 3, period π, shifted up 1</div><div class="step">A = 3. Period = π → B = 2π/π = 2. D = 1.</div><div class="result">y = 3sin(2x) + 1</div></div>`}
-],
-qs:[
-{q:"y=3sin(2x)+1: Amp & Period?",o:["Amp=3, Period=π","Amp=3, Period=2π","Amp=2, Period=π","Amp=1, Period=π/2"],a:0,t:"A=3, P=2π/2=π."},
-{q:"Period formula for y=Asin(Bx)?",o:["2π/|B|","2πB","|B|/2π","π/B"],a:0,t:"Period = 2π/|B|."},
-{q:"Sine curve with period 4π has B = ?",o:["1/2","2","4π","π"],a:0,t:"4π = 2π/B → B = 2π/4π = 1/2."},
-]},
-
-{n:17,cat:"seq",name:"Series",
-learn:[
-{title:"Arithmetic Sequences & Series (8.1-8.2)",icon:"➕",body:`Common difference <b>d = aₙ - aₙ₋₁</b>
-<span class="formula">Explicit: aₙ = a₁ + (n-1)d
-Sum: Sₙ = n/2 · (a₁ + aₙ)</span>
-<div class="example"><div class="step">Sequence: -17, -13, -9, ...</div><div class="step">d = -13-(-17) = 4</div><div class="result">aₙ = -17 + (n-1)(4)</div></div>`},
-{title:"Geometric Sequences & Series (8.3)",icon:"✖️",body:`Common ratio <b>r = aₙ/aₙ₋₁</b>
-<span class="formula">Explicit: aₙ = a₁ · r^(n-1)
-Finite Sum: Sₙ = a₁(1 - rⁿ)/(1 - r)</span>
-<div class="example"><div class="step">2, -4, 8, -16... r = -4/2 = -2</div><div class="result">aₙ = 2·(-2)^(n-1)</div></div>`},
-{title:"Infinite Geometric Series (8.4)",icon:"∞",body:`Converges ONLY if <b>|r| < 1</b>:
-<span class="formula">S∞ = a₁/(1 - r)</span>
-<div class="example"><div class="step">a₁ = 4, r = 1/3. |1/3| < 1 ✓</div><div class="result">S∞ = 4/(1-1/3) = 4/(2/3) = 6</div></div>
-If |r| ≥ 1, the series <b>diverges</b> (no finite sum).`},
-{title:"Sigma Notation (8.2)",icon:"Σ",body:`<span class="formula">Σ(k=1 to n) f(k) = f(1) + f(2) + ... + f(n)</span>
-Expand first few terms to identify a₁ and d (or r), then use formulas.
-<div class="example"><div class="step">Σ(k=1 to 6) (3k+2) = 5+8+11+14+17+20</div><div class="step">Arithmetic: a₁=5, a₆=20, n=6</div><div class="result">S₆ = 6/2·(5+20) = 75</div></div>`}
-],
-qs:[
-{q:"2,-4,8,-16... arithmetic or geometric?",o:["Geometric, r=-2","Arithmetic, d=-6","Geometric, r=2","Neither"],a:0,t:"Ratio=-2. Constant → geometric."},
-{q:"Infinite geometric: a₁=4, r=1/3. S∞=?",o:["6","12","4","Diverges"],a:0,t:"S∞=4/(1-1/3)=6."},
-{q:"Explicit formula for -17,-13,-9,...?",o:["aₙ=-17+(n-1)(4)","aₙ=-17+(n-1)(-4)","aₙ=-17·4^(n-1)","aₙ=4n-17"],a:0,t:"d=4. aₙ=a₁+(n-1)d."},
-{q:"Σ(k=1 to 9) 3^(k-1) equals: a₁=1, r=3, n=9. Use which formula?",o:["Sₙ = a₁(1-rⁿ)/(1-r)","Sₙ = n/2·(a₁+aₙ)","S∞ = a₁/(1-r)","aₙ = a₁·r^(n-1)"],a:0,t:"Geometric series (r=3) with finite n → finite geometric sum formula."},
-{q:"Does Σ(n=1 to ∞) 5·(-1/4)^(n-1) converge?",o:["Yes, |r|=1/4 < 1","No, r is negative","No, a₁=5 is too large","Only if n < 100"],a:0,t:"|r|=|-1/4|=1/4 < 1 → converges. S∞=5/(1+1/4)=4."},
-]},
-
-{n:18,cat:"conics",name:"Conics",
-learn:[
-{title:"Identifying Conics",icon:"🔍",body:`Look at the equation form:
-<span class="formula">Circle: x² + y² (same coefficients, + sign)
-Ellipse: x²/a² + y²/b² = 1 (different denominators, + sign)
-Hyperbola: x²/a² - y²/b² = 1 (SUBTRACTION)
-Parabola: only ONE variable is squared</span>`},
-{title:"Ellipse (9.1-9.2)",icon:"⬭",body:`<span class="formula">(x-h)²/a² + (y-k)²/b² = 1
-Center: (h, k)
-a > b > 0
-c² = a² - b² (foci distance)
-Foci on the major axis (the longer one)</span>
-If a² is under x → horizontal major axis. If a² is under y → vertical.`},
-{title:"Hyperbola (9.4)",icon:")(️",body:`<span class="formula">(x-h)²/a² - (y-k)²/b² = 1 → opens LEFT/RIGHT
-(y-k)²/a² - (x-h)²/b² = 1 → opens UP/DOWN
-c² = a² + b² (note: PLUS for hyperbolas!)</span>`},
-{title:"Parabola (9.3)",icon:"⟨",body:`<span class="formula">(y-k)² = 4p(x-h) → opens RIGHT (p>0) or LEFT (p<0)
-(x-h)² = 4p(y-k) → opens UP (p>0) or DOWN (p<0)</span>
-The variable that ISN'T squared determines the opening direction.`},
-{title:"Non-linear Systems (9.5)",icon:"🔗",body:`Solve by <b>substitution</b> or <b>elimination</b>. Always check for extraneous solutions.
-<div class="example"><div class="step">{x²+y²=5, -x+y=1}</div><div class="step">From linear: y=x+1. Sub into circle:</div><div class="step">x²+(x+1)²=5 → 2x²+2x-4=0 → (x+2)(x-1)=0</div><div class="result">x=-2→y=-1, x=1→y=2. Solutions: (-2,-1) and (1,2)</div></div>`},
-{title:"Completing the Square for Conics",icon:"✏️",body:`Some problems give expanded form. You must CTS to get standard form.
-<div class="example"><div class="step">x²+6x+8y+1=0</div><div class="step">Group x terms: (x²+6x)+8y+1=0</div><div class="step">CTS: (x²+6x+9)-9+8y+1=0</div><div class="step">(x+3)²+8y-8=0 → (x+3)²=-8(y-1)</div><div class="result">Parabola, opens DOWN (4p=-8, p=-2)</div></div>`}
-],
-qs:[
-{q:"(x-2)²/9 + (y+1)²/4 = 1 is a:",o:["Ellipse","Circle","Hyperbola","Parabola"],a:0,t:"Plus sign, different denoms → ellipse."},
-{q:"Ellipse: a, b, c relationship?",o:["c²=a²-b²","c²=a²+b²","a²=b²-c²","b²=a²+c²"],a:0,t:"Ellipse: c²=a²-b². From 9.1."},
-{q:"(y-2)²=8(x+1) opens:",o:["Right","Left","Up","Down"],a:0,t:"(y-k)²=4p(x-h), p=2>0 → right."},
-{q:"x²-y²=16 is a:",o:["Hyperbola","Ellipse","Circle","Parabola"],a:0,t:"Subtraction → hyperbola."},
-{q:"Solve: x²+y²=5 and y=x+1",o:["(-2,-1) and (1,2)","(2,1) and (-1,-2)","(0,1) and (5,0)","(1,-2) and (-2,1)"],a:0,t:"Sub y=x+1 → 2x²+2x-4=0 → x=-2,1."},
-{q:"For a HYPERBOLA, c² = ?",o:["a²+b²","a²-b²","b²-a²","(a+b)²"],a:0,t:"Hyperbola: c²=a²+b² (plus, not minus like ellipse)."},
-]},
+// ============ DATA ============
+const UC=[
+  {d:0,r:"0",c:"1",s:"0",xy:"(1, 0)"},
+  {d:30,r:"π/6",c:"√3/2",s:"1/2",xy:"(√3/2, 1/2)"},
+  {d:45,r:"π/4",c:"√2/2",s:"√2/2",xy:"(√2/2, √2/2)"},
+  {d:60,r:"π/3",c:"1/2",s:"√3/2",xy:"(1/2, √3/2)"},
+  {d:90,r:"π/2",c:"0",s:"1",xy:"(0, 1)"},
+  {d:120,r:"2π/3",c:"-1/2",s:"√3/2",xy:"(-1/2, √3/2)"},
+  {d:135,r:"3π/4",c:"-√2/2",s:"√2/2",xy:"(-√2/2, √2/2)"},
+  {d:150,r:"5π/6",c:"-√3/2",s:"1/2",xy:"(-√3/2, 1/2)"},
+  {d:180,r:"π",c:"-1",s:"0",xy:"(-1, 0)"},
+  {d:210,r:"7π/6",c:"-√3/2",s:"-1/2",xy:"(-√3/2, -1/2)"},
+  {d:225,r:"5π/4",c:"-√2/2",s:"-√2/2",xy:"(-√2/2, -√2/2)"},
+  {d:240,r:"4π/3",c:"-1/2",s:"-√3/2",xy:"(-1/2, -√3/2)"},
+  {d:270,r:"3π/2",c:"0",s:"-1",xy:"(0, -1)"},
+  {d:300,r:"5π/3",c:"1/2",s:"-√3/2",xy:"(1/2, -√3/2)"},
+  {d:315,r:"7π/4",c:"√2/2",s:"-√2/2",xy:"(√2/2, -√2/2)"},
+  {d:330,r:"11π/6",c:"√3/2",s:"-1/2",xy:"(√3/2, -1/2)"},
 ];
 
-// ===== RENDER TOPIC MENU =====
-function renderMenu(){
-  const el=document.getElementById('topicMenu');
-  let html='';
-  let lastCat='';
-  const catNames={"f(x)":"Functions — f(x)","p(x)":"Polynomials — p(x)","q(x)":"Rationals — q(x)","exp/log":"Exponentials & Logs","trig":"Trigonometry","seq":"Sequences & Series","conics":"Conics"};
-  TOPICS.forEach(tp=>{
-    if(tp.cat!==lastCat){lastCat=tp.cat;html+=`<div class="cat">${catNames[tp.cat]||tp.cat}</div>`;}
-    const sc=getScore(tp.n);
-    const pct=sc.a>0?Math.round(sc.c/sc.a*100):0;
-    const col=pct>=80?'var(--gn)':pct>=50?'var(--or)':'var(--ac)';
-    html+=`<div class="tc" onclick="openTopic(${tp.n})"><span class="tc-num">${tp.n}</span><span class="tc-name">${tp.name}</span><div class="tc-tag">${sc.a>0?pct+'% ('+sc.c+'/'+sc.a+')':'Not started'}</div><div class="tc-bar"><div class="tc-fill" style="width:${pct}%;background:${col}"></div></div></div>`;
+const GRAPHS=[
+  {eq:"f(x) = (x-2)² - 3",fn:x=>Math.pow(x-2,2)-3,xr:[-2,6],yr:[-4,6],info:"Parent x², right 2, down 3"},
+  {eq:"f(x) = -|x+1| + 4",fn:x=>-Math.abs(x+1)+4,xr:[-6,4],yr:[-3,5],info:"Parent |x|, reflect, left 1, up 4"},
+  {eq:"f(x) = √(x+3) - 1",fn:x=>x>=-3?Math.sqrt(x+3)-1:null,xr:[-4,8],yr:[-3,4],info:"Parent √x, left 3, down 1"},
+  {eq:"f(x) = 2sin(x)",fn:x=>2*Math.sin(x),xr:[-1,7],yr:[-3,3],info:"Amplitude 2, period 2π"},
+  {eq:"f(x) = sin(2x)+1",fn:x=>Math.sin(2*x)+1,xr:[-1,7],yr:[-1,3],info:"Period π, up 1"},
+  {eq:"f(x) = x(x-2)(x+1)",fn:x=>x*(x-2)*(x+1),xr:[-2,3],yr:[-4,4],info:"Zeros at -1, 0, 2"},
+  {eq:"f(x) = -(x+3)³+2",fn:x=>-1*Math.pow(x+3,3)+2,xr:[-6,0],yr:[-6,8],info:"Reflect, left 3, up 2"},
+];
+
+const RQ=[
+  {t:"Transformations",n:1,q:"g(x) = -(x+3)² + 5 — transformations from x²?",o:["Reflect x-axis, left 3, up 5","Reflect y-axis, right 3, up 5","Left 3, down 5","Right 3, up 5"],a:0,tip:"Negative = reflect x-axis. +3 inside = left. +5 = up."},
+  {t:"Inverses",n:2,q:"Inverse of f(x) = 2x + 6?",o:["(x-6)/2","(x+6)/2","2x-6","x/2-6"],a:0,tip:"Swap x,y: x=2y+6 → y=(x-6)/2."},
+  {t:"Domain/Range",n:2,q:"Range of f(x) = √(x-3) + 1?",o:["y ≥ 1","y ≥ 3","y ≥ 0","All reals"],a:0,tip:"√ outputs ≥ 0, +1 shifts to y ≥ 1."},
+  {t:"Synthetic Div",n:3,q:"Dividing by (x-3), what goes in the box?",o:["3","-3","1/3","x"],a:0,tip:"(x-c) → use c. So use 3."},
+  {t:"Synthetic Div",n:3,q:"(x³-1) ÷ (x+2) remainder?",o:["-9","7","-7","9"],a:0,tip:"Coeffs 1,0,0,-1. Use -2. Result: remainder -9."},
+  {t:"Complex Roots",n:4,q:"If 2i is a root (real coefficients), what else must be?",o:["-2i","2","-2","4i"],a:0,tip:"Conjugate Root Theorem: 2i pairs with -2i."},
+  {t:"RRT",n:5,q:"P(x)=2x³-3x+1. Possible rational roots = ±(factors of __) / (factors of __)?",o:["1 over 2","2 over 1","3 over 2","1 over 3"],a:0,tip:"±(constant factors)/(leading coeff factors)."},
+  {t:"Long Division",n:6,q:"When must you use long division instead of synthetic?",o:["Divisor is degree 2+","Dividend has negatives","Lead coeff > 1","Never needed"],a:0,tip:"Synthetic only works for (x-c)."},
+  {t:"Sketch p(x)",n:7,q:"At x=-1 in P(x)=2(x+1)²(x-4), the graph:",o:["Bounces","Crosses","Has a cusp","Undefined"],a:0,tip:"Even multiplicity (²) = bounce."},
+  {t:"Sketch p(x)",n:7,q:"End behavior of -3x⁵ + ...?",o:["Rises left, falls right","Falls left, rises right","Falls both","Rises both"],a:0,tip:"Odd degree + negative lead: ↗ left, ↘ right."},
+  {t:"VA & HA",n:8,q:"Degree top < degree bottom → HA is:",o:["y = 0","Lead coeff ratio","No HA","y = 1"],a:0,tip:"Bottom overpowers → shrinks to 0."},
+  {t:"VA & HA",n:8,q:"f(x)=(2x²+1)/(x²-4). HA?",o:["y = 2","y = 0","y = -1/4","No HA"],a:0,tip:"Same degree → ratio = 2/1 = 2."},
+  {t:"Holes",n:9,q:"f(x)=(x²-4)/(x²-x-2). Hole where?",o:["x = 2","x = -2","x = -1","No hole"],a:0,tip:"(x-2)(x+2)/((x-2)(x+1)). (x-2) cancels → hole at x=2."},
+  {t:"Slant",n:10,q:"When does a slant asymptote exist?",o:["Deg top = deg bottom + 1","Degrees equal","Deg bottom > top","Always"],a:0,tip:"Num degree exactly 1 more → slant."},
+  {t:"Exponentials",n:11,q:"Solve: 3^(2x) = 81",o:["x = 2","x = 4","x = 3","x = 27"],a:0,tip:"81=3⁴ → 2x=4 → x=2."},
+  {t:"Exponentials",n:11,q:"Solve: 4^x = 8",o:["x = 3/2","x = 2","x = 2/3","x = 1/2"],a:0,tip:"(2²)^x=2³ → 2x=3 → x=3/2."},
+  {t:"Logarithms",n:12,q:"log₂(32) = ?",o:["5","4","6","16"],a:0,tip:"2⁵=32."},
+  {t:"Logarithms",n:12,q:"log_b(1) = ? (any valid base)",o:["0","1","b","undefined"],a:0,tip:"b⁰=1. From 4.4."},
+  {t:"Logarithms",n:12,q:"Expand: log₃(x²y/z)",o:["2log₃x + log₃y - log₃z","2log₃x · log₃y / log₃z","log₃(2x)+log₃(yz)","(log₃x)²+log₃y-log₃z"],a:0,tip:"Product→add, quotient→sub, power→multiply."},
+  {t:"Trig",n:13,q:"sin θ = 1/2 for 0≤θ<360°",o:["30° and 150°","60° and 120°","30° and 330°","150° and 210°"],a:0,tip:"sin+ in Q1&Q2. Ref 30°."},
+  {t:"Trig",n:13,q:"cos θ = 0 for 0≤θ<360°",o:["90° and 270°","0° and 180°","0° and 360°","90° and 180°"],a:0,tip:"cos=0 at 90° and 270°."},
+  {t:"Trig",n:13,q:"tan θ = -√3 for 0≤θ<360°",o:["120° and 300°","60° and 240°","150° and 330°","120° and 240°"],a:0,tip:"Ref 60°. tan- in Q2&Q4."},
+  {t:"Quad Trig",n:14,q:"2sin²θ - sinθ - 1 = 0 factors as:",o:["(2sinθ+1)(sinθ-1)","(2sinθ-1)(sinθ+1)","(sinθ+1)(sinθ-1)","(2sinθ+1)(sinθ+1)"],a:0,tip:"Let u=sinθ → (2u+1)(u-1)."},
+  {t:"Sum/Diff",n:15,q:"cos(π/12) = cos(___)?",o:["π/3 - π/4","π/6 - π/12","π/2 - π/3","π/4 + π/6"],a:0,tip:"π/3-π/4 = π/12."},
+  {t:"Double Angle",n:15,q:"Valid forms of cos(2θ)?",o:["All: cos²θ-sin²θ, 2cos²θ-1, 1-2sin²θ","Only cos²θ-sin²θ","Only 2cos²θ-1","Only 1-2sin²θ"],a:0,tip:"All three. From 7.2."},
+  {t:"Sine Graphs",n:16,q:"y=3sin(2x)+1: Amp & Period?",o:["Amp=3, Period=π","Amp=3, Period=2π","Amp=2, Period=π","Amp=1, Period=π/2"],a:0,tip:"A=3, P=2π/2=π."},
+  {t:"Series",n:17,q:"2,-4,8,-16... arithmetic or geometric?",o:["Geometric, r=-2","Arithmetic, d=-6","Geometric, r=2","Neither"],a:0,tip:"Ratio=-2. Constant → geometric."},
+  {t:"Series",n:17,q:"Infinite geometric: a₁=4, r=1/3. S∞=?",o:["6","12","4","Diverges"],a:0,tip:"S∞=4/(1-1/3)=6. From 8.4."},
+  {t:"Series",n:17,q:"Explicit formula for -17,-13,-9,...?",o:["aₙ=-17+(n-1)(4)","aₙ=-17+(n-1)(-4)","aₙ=-17·4^(n-1)","aₙ=4n-17"],a:0,tip:"d=4. aₙ=a₁+(n-1)d."},
+  {t:"Conics",n:18,q:"(x-2)²/9 + (y+1)²/4 = 1 is a:",o:["Ellipse","Circle","Hyperbola","Parabola"],a:0,tip:"x²/a²+y²/b²=1, a≠b → ellipse."},
+  {t:"Conics",n:18,q:"Ellipse: a, b, c relationship?",o:["c²=a²-b²","c²=a²+b²","a²=b²-c²","b²=a²+c²"],a:0,tip:"Ellipse: c²=a²-b². From 9.1."},
+  {t:"Conics",n:18,q:"(y-2)²=8(x+1) opens:",o:["Right","Left","Up","Down"],a:0,tip:"(y-k)²=4p(x-h), p=2>0 → right."},
+  {t:"Conics",n:18,q:"x²-y²=16 is a:",o:["Hyperbola","Ellipse","Circle","Parabola"],a:0,tip:"Subtraction → hyperbola."},
+];
+
+// ============ STATE ============
+let xp=0, streak=0, bestStreak=0, totalC=0;
+let ucQs=[], ucI=0, ucOk=0, ucFb=null, ucCl=null, ucMode="angle";
+let gmQs=[], gmI=0, gmOk=0, gmFb=null, gmSel=null;
+let rfQs=[], rfI=0, rfOk=0, rfFb=null, rfSel=null, rfTime=15, rfInterval=null;
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function updateHdr(){
+  const lv=Math.floor(xp/100)+1;
+  document.getElementById('level').textContent=lv;
+  document.getElementById('xpFill').style.width=(xp%100)+'%';
+  document.getElementById('xpVal').textContent=xp;
+  document.getElementById('totalCorrect').textContent=totalC;
+  const sb=document.getElementById('streakBadge');
+  if(streak>=2){sb.classList.add('show');document.getElementById('streakVal').textContent=streak;}
+  else sb.classList.remove('show');
+}
+
+function doStreak(ok){
+  if(ok){streak++;if(streak>bestStreak)bestStreak=streak;}else streak=0;
+  updateHdr();
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id+'Screen').classList.add('active');
+}
+
+// ============ MENU ============
+const modes=[
+  {i:"🎯",t:"Unit Circle Blitz",d:"Click angle by radian. From 5.1c.",f:()=>startUC("angle")},
+  {i:"📍",t:"UC: Coordinates",d:"Given (cos,sin), find it.",f:()=>startUC("coord")},
+  {i:"📈",t:"Graph Match",d:"See graph → pick equation.",f:startGM},
+  {i:"⚡",t:"Rapid Fire",d:"15-sec timer. All 18 topics.",f:startRF},
+  {i:"📐",t:"UC: sin θ",d:"Given sin value, click angle.",f:()=>startUC("sin")},
+  {i:"📏",t:"UC: cos θ",d:"Given cos value, click angle.",f:()=>startUC("cos")},
+];
+const mg=document.getElementById('modeGrid');
+modes.forEach(m=>{
+  const d=document.createElement('div');d.className='mode-card';
+  d.innerHTML=`<div class="mode-icon">${m.i}</div><div class="mode-title">${m.t}</div><div class="mode-desc">${m.d}</div>`;
+  d.onclick=m.f;mg.appendChild(d);
+});
+
+// ============ SVG HELPERS ============
+const NS="http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){const e=document.createElementNS(NS,tag);for(const[k,v] of Object.entries(attrs))e.setAttribute(k,v);return e;}
+
+// ============ UNIT CIRCLE ============
+function startUC(mode){
+  ucMode=mode;ucQs=shuffle(UC).slice(0,10);ucI=0;ucOk=0;ucFb=null;ucCl=null;
+  showScreen('uc');renderUC();
+}
+function renderUC(){
+  const cur=ucQs[ucI];
+  document.getElementById('ucCounter').textContent=`${ucI+1}/${ucQs.length}`;
+  document.getElementById('ucProg').style.width=(ucI/ucQs.length*100)+'%';
+  let pr="";
+  if(ucMode==="angle")pr=`Where is ${cur.r} on the unit circle?`;
+  if(ucMode==="coord")pr=`Which angle has coordinates ${cur.xy}?`;
+  if(ucMode==="sin")pr=`Where is sin θ = ${cur.s}?`;
+  if(ucMode==="cos")pr=`Where is cos θ = ${cur.c}?`;
+  document.getElementById('ucPrompt').textContent=pr;
+  document.getElementById('ucFeedback').style.display='none';
+  drawUC();
+}
+function drawUC(){
+  const svg=document.getElementById('ucSvg');
+  svg.innerHTML='';
+  const cx=155,cy=155,r=115;
+  svg.appendChild(svgEl('circle',{cx,cy,r,fill:'none',stroke:'#2a3350','stroke-width':1.5}));
+  svg.appendChild(svgEl('line',{x1:cx-r-8,y1:cy,x2:cx+r+8,y2:cy,stroke:'#2a3350','stroke-width':.5}));
+  svg.appendChild(svgEl('line',{x1:cx,y1:cy-r-8,x2:cx,y2:cy+r+8,stroke:'#2a3350','stroke-width':.5}));
+  // Quadrant labels
+  [['I',cx+r/2,cy-r/2],['II',cx-r/2,cy-r/2],['III',cx-r/2,cy+r/2+8],['IV',cx+r/2,cy+r/2+8]].forEach(([t,x,y])=>{
+    const txt=svgEl('text',{x,y,fill:'#2a3350','font-size':11,'text-anchor':'middle','font-family':'monospace'});
+    txt.textContent=t;svg.appendChild(txt);
   });
-  el.innerHTML=html;
-}
-
-// ===== OPEN TOPIC =====
-let curTopic=null, curTab='learn';
-function openTopic(n){
-  curTopic=TOPICS.find(t=>t.n===n);
-  curTab='learn';
-  renderTopic();
-  showScreen('topic');
-}
-function renderTopic(){
-  const tp=curTopic;
-  let html=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><button class="btn" onclick="showScreen('menu')" style="padding:6px 14px">← Back</button><h2 style="margin:0">#${tp.n}: ${tp.name}</h2></div>`;
-  html+=`<div class="tabs"><div class="tab ${curTab==='learn'?'active':''}" onclick="curTab='learn';renderTopic()">📖 Learn</div><div class="tab ${curTab==='practice'?'active':''}" onclick="startTopicQuiz()">🎯 Practice</div></div>`;
-  if(curTab==='learn'){
-    tp.learn.forEach(l=>{
-      html+=`<div class="learn-card"><div class="learn-title"><span class="icon">${l.icon}</span>${l.title}</div><div class="learn-body">${l.body}</div></div>`;
-    });
-    html+=`<div class="ctr mt"><button class="btn bp" onclick="startTopicQuiz()">Practice This Topic →</button></div>`;
-  }
-  document.getElementById('topicContent').innerHTML=html;
-}
-
-// ===== TOPIC QUIZ =====
-let tqQs=[],tqI=0,tqOk=0,tqFb=null,tqSel=null;
-function startTopicQuiz(){
-  curTab='practice';
-  tqQs=shuffle(curTopic.qs);tqI=0;tqOk=0;tqFb=null;tqSel=null;
-  renderQuiz();showScreen('quiz');
-}
-function renderQuiz(){
-  const q=tqQs[tqI];
-  const pct=(tqI/tqQs.length)*100;
-  let html=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><button class="btn" onclick="openTopic(curTopic.n)" style="padding:6px 14px">← ${curTopic.name}</button></div>`;
-  html+=`<div class="prog"><div class="prof" style="width:${pct}%"></div></div>`;
-  html+=`<div class="qr"><span>${tqI+1}/${tqQs.length}</span><span class="badge">#${curTopic.n} — ${curTopic.name}</span></div>`;
-  html+=`<div class="qt">${q.q}</div>`;
-  const shuf=q.o.map((o,i)=>({text:o,origI:i}));
-  shuffle(shuf);
-  shuf.forEach((o,di)=>{
-    let cls='ob';
-    if(tqFb){cls+=' lk';if(o.origI===q.a)cls+=' ok';else if(di===tqSel&&tqFb==='wrong')cls+=' no';}
-    html+=`<button class="${cls}" onclick="onTqClick(${di},${o.origI})">${o.text}</button>`;
+  const cur=ucQs[ucI];
+  UC.forEach(a=>{
+    const rad=a.d*Math.PI/180,px=cx+r*Math.cos(rad),py=cy-r*Math.sin(rad);
+    let col='#6b7394',sz=7;
+    const isClicked=ucFb&&ucCl===a.d;
+    const isAnswer=ucFb==='wrong'&&a.d===cur.d;
+    if(isClicked){col=ucFb==='correct'?'#34d399':'#f87171';sz=10;}
+    if(isAnswer){col='#34d399';sz=10;}
+    const dot=svgEl('circle',{cx:px,cy:py,r:sz,fill:col,style:'transition:all .2s;cursor:'+(ucFb?'default':'pointer')});
+    if(!ucFb)dot.onclick=()=>onUCClick(a.d);
+    svg.appendChild(dot);
+    if(ucFb&&(isClicked||isAnswer)){
+      const lbl=svgEl('text',{x:px+(Math.cos(rad)>0?13:-13),y:py+(Math.sin(rad)>0?-11:15),fill:col,'font-size':9,'font-weight':'bold','text-anchor':Math.cos(rad)>0?'start':'end','font-family':'monospace'});
+      lbl.textContent=a.d+'°';svg.appendChild(lbl);
+    }
   });
-  if(tqFb){
-    html+=`<div class="tip show"><b>${tqFb==='correct'?'✓ Correct!':'✗ Wrong.'}</b> ${q.t}</div>`;
-    html+=`<div class="mr mt"><button class="btn bp" onclick="nextTq()">Next →</button></div>`;
-  }
-  document.getElementById('quizContent').innerHTML=html;
 }
-function onTqClick(displayIdx,origIdx){
-  if(tqFb)return;
-  const q=tqQs[tqI];
-  const ok=origIdx===q.a;
-  tqSel=displayIdx;tqFb=ok?'correct':'wrong';
-  if(ok){tqOk++;totC++;xp+=10+(streak>=3?5:0);}
-  doStreak(ok);addScore(curTopic.n,ok);renderQuiz();
-}
-function nextTq(){
-  if(tqI+1>=tqQs.length){
-    const pct=Math.round(tqOk/tqQs.length*100);
-    const cls=pct>=80?'g':pct>=60?'o':'b';
-    document.getElementById('resContent').innerHTML=`<h2>#${curTopic.n}: ${curTopic.name}</h2><div class="scr ${cls}">${pct}%</div><div style="color:var(--dm);font-size:14px;margin-bottom:20px">${tqOk}/${tqQs.length} correct${best>1?' · Best streak: 🔥'+best:''}</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn bp" onclick="startTopicQuiz()">Retry</button><button class="btn" onclick="openTopic(curTopic.n)">Back to Topic</button><button class="btn" onclick="showScreen('menu')">All Topics</button></div>`;
-    showScreen('res');
-  } else {tqI++;tqFb=null;tqSel=null;renderQuiz();}
+function onUCClick(deg){
+  if(ucFb)return;
+  const cur=ucQs[ucI],ok=deg===cur.d;
+  ucCl=deg;ucFb=ok?'correct':'wrong';
+  if(ok){ucOk++;totalC++;xp+=(streak>=3?15:10);}
+  doStreak(ok);drawUC();
+  const fb=document.getElementById('ucFeedback');fb.style.display='block';
+  fb.innerHTML=`<div class="fb-text" style="color:${ok?'var(--gn)':'var(--rd)'}">${ok?'✓ Nice!':'✗ That was '+cur.d+'° ('+cur.r+')'}</div><div class="fb-detail">${cur.xy} — sin=${cur.s}, cos=${cur.c}</div>`;
+  setTimeout(()=>{
+    if(ucI+1>=ucQs.length){showResults('Unit Circle',ucOk,ucQs.length);}
+    else{ucI++;ucFb=null;ucCl=null;renderUC();}
+  },1300);
 }
 
-// ===== INIT =====
-renderMenu();updHdr();
+// ============ GRAPH MATCH ============
+function startGM(){
+  gmQs=shuffle(GRAPHS).map(g=>{
+    const wr=shuffle(GRAPHS.filter(x=>x.eq!==g.eq)).slice(0,3);
+    const opts=shuffle([g,...wr]);
+    return{...g,opts:opts.map(o=>o.eq),ci:opts.findIndex(o=>o.eq===g.eq)};
+  });
+  gmI=0;gmOk=0;gmFb=null;gmSel=null;
+  showScreen('gm');renderGM();
+}
+function drawGraph(svg,fn,xr,yr,w,h){
+  svg.innerHTML='';
+  const p=28,gw=w-2*p,gh=h-2*p;
+  const tx=x=>p+((x-xr[0])/(xr[1]-xr[0]))*gw;
+  const ty=y=>p+((yr[1]-y)/(yr[1]-yr[0]))*gh;
+  svg.appendChild(svgEl('rect',{width:w,height:h,fill:'#111827',rx:12}));
+  svg.appendChild(svgEl('line',{x1:p,y1:ty(0),x2:w-p,y2:ty(0),stroke:'#2a3350','stroke-width':1}));
+  svg.appendChild(svgEl('line',{x1:tx(0),y1:p,x2:tx(0),y2:h-p,stroke:'#2a3350','stroke-width':1}));
+  let d='',started=false;
+  for(let i=0;i<=200;i++){
+    const x=xr[0]+(i/200)*(xr[1]-xr[0]),y=fn(x);
+    if(y===null||y===undefined||isNaN(y)){started=false;continue;}
+    const cy2=Math.max(yr[0]-1,Math.min(yr[1]+1,y));
+    d+=(started?'L':'M')+tx(x).toFixed(1)+','+ty(cy2).toFixed(1)+' ';started=true;
+  }
+  svg.appendChild(svgEl('path',{d,fill:'none',stroke:'#22d3ee','stroke-width':2.5,'stroke-linecap':'round'}));
+}
+function renderGM(){
+  const cur=gmQs[gmI];
+  document.getElementById('gmCounter').textContent=`${gmI+1}/${gmQs.length}`;
+  document.getElementById('gmProg').style.width=(gmI/gmQs.length*100)+'%';
+  drawGraph(document.getElementById('gmSvg'),cur.fn,cur.xr,cur.yr,320,220);
+  document.getElementById('gmTip').classList.remove('show');
+  document.getElementById('gmTip').innerHTML='';
+  document.getElementById('gmNext').style.display='none';
+  const od=document.getElementById('gmOpts');od.innerHTML='';
+  const letters='ABCD';
+  cur.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt-btn';
+    b.innerHTML=`<span class="opt-letter">${letters[i]}</span>${o}`;
+    b.onclick=()=>onGMClick(i);od.appendChild(b);
+  });
+}
+function onGMClick(i){
+  if(gmFb)return;
+  const cur=gmQs[gmI],ok=i===cur.ci;
+  gmSel=i;gmFb=ok?'correct':'wrong';
+  if(ok){gmOk++;totalC++;xp+=15;}doStreak(ok);
+  const btns=document.getElementById('gmOpts').children;
+  for(let j=0;j<btns.length;j++){
+    btns[j].classList.add('locked');
+    if(j===cur.ci)btns[j].classList.add('correct');
+    else if(j===i&&!ok)btns[j].classList.add('wrong');
+  }
+  const tip=document.getElementById('gmTip');
+  tip.innerHTML=`<b>${ok?'✓ Correct!':'✗ Wrong.'}</b> ${cur.info}`;
+  tip.classList.add('show');
+  document.getElementById('gmNext').style.display='block';
+}
+function nextGM(){
+  if(gmI+1>=gmQs.length){showResults('Graph Match',gmOk,gmQs.length);}
+  else{gmI++;gmFb=null;gmSel=null;renderGM();}
+}
+
+// ============ RAPID FIRE ============
+function startRF(){
+  rfQs=shuffle(RQ).slice(0,20);rfI=0;rfOk=0;rfFb=null;rfSel=null;rfTime=15;
+  showScreen('rf');renderRF();startRFTimer();
+}
+function renderRF(){
+  const cur=rfQs[rfI];
+  document.getElementById('rfCounter').textContent=`${rfI+1}/${rfQs.length}`;
+  document.getElementById('rfProg').style.width=(rfI/rfQs.length*100)+'%';
+  document.getElementById('rfBadge').textContent=`#${cur.n} — ${cur.t}`;
+  document.getElementById('rfQuestion').textContent=cur.q;
+  const td=document.getElementById('rfTimer');td.textContent=rfTime;td.style.display='block';
+  td.className='timer'+(rfTime<=5?' danger':rfTime<=10?' warn':'');
+  document.getElementById('rfTimeout').style.display='none';
+  document.getElementById('rfTip').classList.remove('show');
+  document.getElementById('rfTip').innerHTML='';
+  document.getElementById('rfNext').style.display='none';
+  const od=document.getElementById('rfOpts');od.innerHTML='';
+  const letters='ABCD';
+  cur.o.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt-btn';
+    b.innerHTML=`<span class="opt-letter">${letters[i]}</span>${o}`;
+    b.onclick=()=>onRFClick(i);od.appendChild(b);
+  });
+}
+function startRFTimer(){
+  stopRFTimer();rfTime=15;
+  rfInterval=setInterval(()=>{
+    rfTime--;
+    const td=document.getElementById('rfTimer');
+    td.textContent=rfTime;td.className='timer'+(rfTime<=5?' danger':rfTime<=10?' warn':'');
+    if(rfTime<=0){stopRFTimer();rfFb='timeout';doStreak(false);
+      td.style.display='none';
+      document.getElementById('rfTimeout').style.display='block';
+      document.getElementById('rfTimeout').innerHTML='<span style="color:var(--rd);font-weight:700">⏱ Time\'s up!</span>';
+      const cur=rfQs[rfI];const btns=document.getElementById('rfOpts').children;
+      for(let j=0;j<btns.length;j++){btns[j].classList.add('locked');if(j===cur.a)btns[j].classList.add('correct');}
+      const tip=document.getElementById('rfTip');tip.innerHTML=`<b>⏱ Timed out.</b> ${cur.tip}`;tip.classList.add('show');
+      document.getElementById('rfNext').style.display='block';
+    }
+  },1000);
+}
+function stopRFTimer(){if(rfInterval){clearInterval(rfInterval);rfInterval=null;}}
+function onRFClick(i){
+  if(rfFb)return;stopRFTimer();
+  const cur=rfQs[rfI],ok=i===cur.a;
+  rfSel=i;rfFb=ok?'correct':'wrong';
+  if(ok){rfOk++;totalC++;xp+=10+Math.floor(rfTime/3);}doStreak(ok);
+  document.getElementById('rfTimer').style.display='none';
+  const btns=document.getElementById('rfOpts').children;
+  for(let j=0;j<btns.length;j++){btns[j].classList.add('locked');if(j===cur.a)btns[j].classList.add('correct');else if(j===i&&!ok)btns[j].classList.add('wrong');}
+  const tip=document.getElementById('rfTip');tip.innerHTML=`<b>${ok?'✓ Correct!':'✗ Wrong.'}</b> ${cur.tip}`;tip.classList.add('show');
+  document.getElementById('rfNext').style.display='block';
+}
+function nextRF(){
+  if(rfI+1>=rfQs.length){showResults('Rapid Fire',rfOk,rfQs.length);}
+  else{rfI++;rfFb=null;rfSel=null;renderRF();startRFTimer();}
+}
+
+// ============ RESULTS ============
+function showResults(mode,correct,total){
+  const pct=Math.round(correct/total*100);
+  const cls=pct>=80?'great':pct>=60?'ok':'bad';
+  document.getElementById('resContent').innerHTML=`
+    <h2>${mode} Complete</h2>
+    <div class="score-big ${cls}">${pct}%</div>
+    <div style="color:var(--dm);font-size:14px;margin-bottom:24px">${correct}/${total} correct${bestStreak>1?' · Best streak: 🔥'+bestStreak:''}</div>
+    <button class="btn btn-primary" onclick="showScreen('menu')">Play Again</button>
+  `;
+  showScreen('res');updateHdr();
+}
+
+updateHdr();
 </script>
 </body>
 </html>
